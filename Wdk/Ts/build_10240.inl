@@ -123,7 +123,7 @@ namespace wdk::build_10240
         UINT8 WaitIrql;
         CHAR WaitMode;
 #endif
-        volatile SIZE_T WaitStatus;
+        volatile SSIZE_T WaitStatus;
         struct _KWAIT_BLOCK* WaitBlockList;
         union
         {
