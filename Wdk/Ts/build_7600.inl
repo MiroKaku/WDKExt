@@ -1,6 +1,12 @@
 #pragma once
 
 
+/*
+ * PDB file: \Nt-Crucial-Modules\Ntoskrnl\6.1.7600.17795\
+ * Dumped by pdbex tool v0.4, by wbenny
+ */
+
+
 namespace wdk::build_7600
 {
 

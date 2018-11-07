@@ -54,6 +54,14 @@ using SIZE_T    = ULONG_PTR;
 #endif
 
 
+#ifndef SameDefine$
+#define SameDefine$(ns, type)       \
+    using _##type   = ns::_##type;  \
+    using type      = ns::type;     \
+    using P##type   = ns::P##type
+#endif
+
+
 namespace wdk
 {
     

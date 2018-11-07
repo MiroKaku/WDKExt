@@ -239,6 +239,7 @@ namespace wdk
 #pragma endregion
        
 
+#pragma region Mutex
     typedef struct _KGUARDED_MUTEX
     {
         volatile INT32 Count;
@@ -256,7 +257,7 @@ namespace wdk
         }; /* size: 0x0004 */
     } KGUARDED_MUTEX, *PKGUARDED_MUTEX; /* size: 0x0038 */ /* size: 0x0020 */
     static_assert(sizeof(KGUARDED_MUTEX) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0038 : 0x0020));
-
+#pragma endregion
 
 
 }

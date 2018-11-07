@@ -4,6 +4,7 @@
 
 * C++17  
 * Windows 7 or higher  
+* Arch: X86, AMD64
 
 ##  Config
 
@@ -20,7 +21,7 @@ auto DriverEntry(PDRIVER_OBJECT aDriverObject, PUNICODE_STRING) -> NTSTATUS
     {
         // Just a chestnut(example)
 
-        vStatus = WdkInitSystem();
+        vStatus = wdk::WdkInitSystem();
         if (!NT_SUCCESS(vStatus))
         {
             break;
