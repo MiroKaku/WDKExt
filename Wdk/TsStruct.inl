@@ -334,6 +334,13 @@ namespace wdk
     } PS_CLIENT_SECURITY_CONTEXT, *PPS_CLIENT_SECURITY_CONTEXT; /* size: 0x0008 */ /* size: 0x0004 */
     static_assert(sizeof(PS_CLIENT_SECURITY_CONTEXT) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0008 : 0x0004));
 
+
+    enum : UINT32
+    {
+        GroupAffinityFillSize = offsetof(GROUP_AFFINITY, Reserved)
+    };
+
+
 }
 
 #include "Ts\build_7600.inl"

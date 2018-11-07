@@ -5,10 +5,18 @@ namespace wdk
 {
 
 
+    using ExEnumHandleRoutineWin7 = BOOLEAN(*)(
+        _Inout_ struct _HANDLE_TABLE_ENTRY* HandleTableEntry,
+        _In_ HANDLE Handle,
+        _In_ PVOID EnumParameter
+        );
+
+    // since Windows 8
     using ExEnumHandleRoutine = BOOLEAN(*)(
-            _In_ struct _HANDLE_TABLE_ENTRY* HandleTableEntry,
-            _In_ HANDLE Handle,
-            _In_ PVOID EnumParameter
+        _In_ struct _HANDLE_TABLE* HandleTable,
+        _Inout_ struct _HANDLE_TABLE_ENTRY* HandleTableEntry,
+        _In_ HANDLE Handle,
+        _In_ PVOID EnumParameter
         );
 
 

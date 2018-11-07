@@ -262,6 +262,7 @@ namespace wdk
     } ALPC_PROCESS_CONTEXT, *PALPC_PROCESS_CONTEXT; /* size: 0x0020 */ /* size: 0x0010 */
     static_assert(sizeof(ALPC_PROCESS_CONTEXT) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0020 : 0x0010));
 
+
 }
 
 #include "Ps\build_7600.inl"

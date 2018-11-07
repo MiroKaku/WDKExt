@@ -88,6 +88,7 @@ namespace wdk::build_7600
         VOID* VdmTrapcHandler;
 #endif  
     } KPROCESS, *PKPROCESS; /* size: 0x0160 */ /* size: 0x0098 */
+    static_assert(sizeof(KPROCESS) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0160 : 0x0098));
 
 
     typedef struct _EPROCESS
@@ -95,7 +96,7 @@ namespace wdk::build_7600
         struct _KPROCESS Pcb;
         struct _EX_PUSH_LOCK ProcessLock;
 #ifdef _X86_
-        UINT32 Pendding;
+        UINT32 Padding;
 #endif
         union _LARGE_INTEGER CreateTime;
         union _LARGE_INTEGER ExitTime;
