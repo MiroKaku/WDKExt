@@ -22,7 +22,7 @@ namespace wdk::build_7600
         VOID* InitialStack;
         VOID* volatile StackLimit;
         VOID* KernelStack;
-        SIZE_T ThreadLock;
+        EX_PUSH_LOCK ThreadLock;
         union _KWAIT_STATUS_REGISTER WaitRegister;
         volatile UINT8 Running;
         UINT8 Alerted[MaximumMode];
@@ -310,7 +310,7 @@ namespace wdk::build_7600
             struct _ETHREAD* ReaperLink;
             VOID* KeyedWaitValue;
         };
-        SIZE_T ActiveTimerListLock;
+        EX_PUSH_LOCK ActiveTimerListLock;
         struct _LIST_ENTRY ActiveTimerListHead;
         struct _CLIENT_ID Cid;
         union

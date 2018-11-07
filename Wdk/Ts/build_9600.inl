@@ -19,7 +19,7 @@ namespace wdk::build_9600
         VOID* InitialStack;
         VOID* volatile StackLimit;
         VOID* StackBase;
-        SIZE_T ThreadLock;
+        EX_PUSH_LOCK ThreadLock;
         volatile UINT64 CycleTime;
 #ifdef _X86_
         volatile UINT32 HighCycleTime;
@@ -32,7 +32,7 @@ namespace wdk::build_9600
         struct _KSCHEDULING_GROUP* volatile SchedulingGroup;
         union _KWAIT_STATUS_REGISTER WaitRegister;
         volatile UINT8 Running;
-        UINT8 Alerted[2];
+        UINT8 Alerted[MaximumMode];
         union
         {
             struct /* bitfield */
@@ -384,7 +384,7 @@ namespace wdk::build_9600
             struct _ETHREAD* ReaperLink;
             VOID* KeyedWaitValue;
         };
-        SIZE_T ActiveTimerListLock;
+        EX_PUSH_LOCK ActiveTimerListLock;
         struct _LIST_ENTRY ActiveTimerListHead;
         struct _CLIENT_ID Cid;
         union
@@ -497,8 +497,8 @@ namespace wdk::build_9600
         UINT32 IoBoostCount;
         struct _LIST_ENTRY BoostList;
         struct _LIST_ENTRY DeboostList;
-        SIZE_T BoostListLock;
-        SIZE_T IrpListLock;
+        EX_PUSH_LOCK BoostListLock;
+        EX_PUSH_LOCK IrpListLock;
         VOID* ReservedForSynchTracking;
         struct _SINGLE_LIST_ENTRY CmCallbackListHead;
         const struct _GUID* ActivityId;

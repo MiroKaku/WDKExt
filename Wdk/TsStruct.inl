@@ -340,6 +340,13 @@ namespace wdk
         GroupAffinityFillSize = offsetof(GROUP_AFFINITY, Reserved)
     };
 
+    
+    typedef struct _PS_PROPERTY_SET
+    {
+        struct _LIST_ENTRY ListHead;
+        EX_PUSH_LOCK Lock;
+    } PS_PROPERTY_SET, *PPS_PROPERTY_SET; /* size: 0x0018 */ /* size: 0x000c */
+
 
 }
 

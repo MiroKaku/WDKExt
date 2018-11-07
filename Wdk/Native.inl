@@ -55,10 +55,10 @@ using SIZE_T    = ULONG_PTR;
 
 
 #ifndef SameDefine$
-#define SameDefine$(ns, type)       \
-    using _##type   = ns::_##type;  \
-    using type      = ns::type;     \
-    using P##type   = ns::P##type
+#define SameDefine$(ns, type)   \
+    using ns::_##type;          \
+    using ns::type;             \
+    using ns::P##type
 #endif
 
 

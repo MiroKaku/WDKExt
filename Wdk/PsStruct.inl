@@ -86,7 +86,7 @@ namespace wdk
             };
         };
     } PS_PROTECTION, *PPS_PROTECTION;
-       
+
 
     typedef union _KEXECUTE_OPTIONS
     {
