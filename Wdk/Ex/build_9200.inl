@@ -45,7 +45,7 @@ namespace wdk::build_9200
                 SIZE_T ObjectPointerBits : sizeof(SIZE_T) * 8 - 23; /* bit position: 23 */
 #else
                 SIZE_T Attributes : 2; /* bit position: 1 */
-                SIZE_T ObjectPointerBits : sizeof(SIZE_T) * 8 - 23; /* bit position: 3 */
+                SIZE_T ObjectPointerBits : sizeof(SIZE_T) * 8 - 3; /* bit position: 3 */
 #endif
             }; /* bitfield */
         };

@@ -9,6 +9,7 @@
 
 namespace wdk::build_7601
 {
+    using build_7600::NumberOfProcessor;
 
     SameDefine$(build_7600, KAFFINITY_EX);
     SameDefine$(build_7600, KPROCESS);

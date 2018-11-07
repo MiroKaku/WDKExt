@@ -1,4 +1,5 @@
 #pragma once
+#include "RtlStruct.inl"
 
 
 namespace wdk
