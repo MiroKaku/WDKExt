@@ -387,13 +387,6 @@ namespace wdk
     } JOBOBJECT_INTERFERENCE_INFORMATION, *PJOBOBJECT_INTERFERENCE_INFORMATION;
 
     // private
-    typedef struct _JOBOBJECT_WAKE_FILTER
-    {
-        ULONG HighEdgeFilter;
-        ULONG LowEdgeFilter;
-    } JOBOBJECT_WAKE_FILTER, *PJOBOBJECT_WAKE_FILTER;
-
-    // private
     typedef struct _JOBOBJECT_FREEZE_INFORMATION
     {
         union

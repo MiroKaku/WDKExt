@@ -88,6 +88,41 @@ namespace wdk
     } PS_PROTECTION, *PPS_PROTECTION;
 
 
+    typedef union _PS_INTERLOCKED_TIMER_DELAY_VALUES
+    {
+        union
+        {
+            struct /* bitfield */
+            {
+                UINT64 DelayMs : 30; /* bit position: 0 */
+                UINT64 CoalescingWindowMs : 30; /* bit position: 30 */
+                UINT64 Reserved : 1; /* bit position: 60 */
+                UINT64 NewTimerWheel : 1; /* bit position: 61 */
+                UINT64 Retry : 1; /* bit position: 62 */
+                UINT64 Locked : 1; /* bit position: 63 */
+            }; /* bitfield */
+            UINT64 All;
+        }; /* size: 0x0008 */
+    } PS_INTERLOCKED_TIMER_DELAY_VALUES, *PPS_INTERLOCKED_TIMER_DELAY_VALUES; /* size: 0x0008 */
+
+
+    typedef struct _JOBOBJECT_WAKE_FILTER
+    {
+        ULONG HighEdgeFilter;
+        ULONG LowEdgeFilter;
+    } JOBOBJECT_WAKE_FILTER, *PJOBOBJECT_WAKE_FILTER;
+
+
+    typedef struct _PS_PROCESS_WAKE_INFORMATION
+    {
+        UINT64 NotificationChannel;
+        UINT32 WakeCounters[7];
+        struct _JOBOBJECT_WAKE_FILTER WakeFilter;
+        UINT32 NoWakeCounter;
+    } PS_PROCESS_WAKE_INFORMATION, *PPS_PROCESS_WAKE_INFORMATION; /* size: 0x0030 */
+    static_assert(sizeof(PS_PROCESS_WAKE_INFORMATION) == 0x0030);
+
+
     typedef union _KEXECUTE_OPTIONS
     {
         union
