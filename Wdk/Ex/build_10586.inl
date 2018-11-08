@@ -10,9 +10,9 @@
 namespace wdk::build_10586
 {
 
-    SameDefine$(build_9600, EXHANDLE);
-    SameDefine$(build_9600, HANDLE_TABLE_FREE_LIST);
-    SameDefine$(build_9600, HANDLE_TABLE_ENTRY);
-    SameDefine$(build_9600, HANDLE_TABLE);
+    SameDefine$(build_10240, EXHANDLE);
+    SameDefine$(build_10240, HANDLE_TABLE_FREE_LIST);
+    SameDefine$(build_10240, HANDLE_TABLE_ENTRY);
+    SameDefine$(build_10240, HANDLE_TABLE);
 
 }

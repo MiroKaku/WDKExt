@@ -38,7 +38,7 @@ namespace wdk::build_15063
         } u1;
         SIZE_T Reserved0;
         struct _MMSUPPORT_FLAGS Flags;
-    } MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE; /* size: 0x00c0 */ /* size: 0x0064 */
+    } MMSUPPORT_INSTANCE, *PMMSUPPORT_INSTANCE; /* size: 0x00c8 */ /* size: 0x0068 */
     static_assert(sizeof(MMSUPPORT_INSTANCE) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x00c8 : 0x0068));
 
 
@@ -54,7 +54,7 @@ namespace wdk::build_15063
         SIZE_T ChargedWslePages;
         SIZE_T ActualWslePages;
         VOID* ShadowMapping;
-    } MMSUPPORT_SHARED, *PMMSUPPORT_SHARED; /* size: 0x0050 */ /* size: 0x002c */
+    } MMSUPPORT_SHARED, *PMMSUPPORT_SHARED; /* size: 0x0048 */ /* size: 0x0028 */
     static_assert(sizeof(MMSUPPORT_SHARED) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0048 : 0x0028));
 
 

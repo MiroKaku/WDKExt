@@ -10,8 +10,8 @@
 namespace wdk::build_16299
 {
 
-    using build_10586::NumberOfProcessor;
-    SameDefine$(build_10586, KAFFINITY_EX);
+    using build_15063::NumberOfProcessor;
+    SameDefine$(build_15063, KAFFINITY_EX);
 
     
     typedef struct _KPROCESS
@@ -43,9 +43,11 @@ namespace wdk::build_16299
                 UINT32 DeepFreeze : 1; /* bit position: 3 */
                 UINT32 TimerVirtualization : 1; /* bit position: 4 */
                 UINT32 CheckStackExtents : 1; /* bit position: 5 */
-                UINT32 PpmPolicy : 3; /* bit position: 6 */
-                UINT32 ActiveGroupsMask : NumberOfProcessor; /* bit position: 8 */
-                INT32 ReservedFlags : (sizeof(UINT32) * 8) - 9 - NumberOfProcessor; /* bit position: 28 */ /* bit position: 9 */
+                UINT32 CacheIsolationEnabled : 1; /* bit position: 6 */
+                UINT32 PpmPolicy : 3; /* bit position: 7 */
+                UINT32 ActiveGroupsMask : NumberOfProcessor; /* bit position: 10 */
+                UINT32 VaSpaceDeleted : 1; /* bit position: 30/11 */
+                INT32 ReservedFlags : (sizeof(UINT32) * 8) - 11 - NumberOfProcessor; /* bit position: 31/12 */
             }; /* bitfield */
             volatile INT32 ProcessFlags;
         }; /* size: 0x0004 */

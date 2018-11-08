@@ -57,7 +57,8 @@ namespace wdk::build_16299
                 UINT32 TimerSuspended : 1; /* bit position: 17 */
                 UINT32 SuspendedWaitMode : 1; /* bit position: 18 */
                 UINT32 SuspendSchedulerApcWait : 1; /* bit position: 19 */
-                UINT32 Reserved : 12; /* bit position: 20 */
+                UINT32 CetShadowStack : 1; /* bit position: 20 */
+                UINT32 Reserved : 11; /* bit position: 21 */
             }; /* bitfield */
             INT32 MiscFlags;
         }; /* size: 0x0004 */
@@ -98,7 +99,19 @@ namespace wdk::build_16299
             UINT8 UserHeteroCpuPolicy : 7; /* bit position: 0 */
             UINT8 ExplicitSystemHeteroCpuPolicy : 1; /* bit position: 7 */
         }; /* bitfield */
+#ifdef _X86_
         UINT8 Spare0;
+#else
+        union
+        {
+            struct /* bitfield */
+            {
+                UINT8 RunningNonRetpolineCode : 1; /* bit position: 0 */
+                UINT8 SpecCtrlSpare : 7; /* bit position: 1 */
+            }; /* bitfield */
+            UINT8 SpecCtrl;
+        }; /* size: 0x0001 */
+#endif
         UINT32 SystemCallNumber;
 #ifdef _WIN64 
         UINT32 ReadyTime;
@@ -345,7 +358,7 @@ namespace wdk::build_16299
         UINT8 AbEntrySummary;
         UINT8 AbWaitEntryCount;
         UINT8 AbAllocationRegionCount;
-        UINT8 Spare20;
+        INT8 SystemPriority;
 #ifdef _WIN64
         UINT32 SecureThreadCookie;
 #endif
@@ -471,7 +484,8 @@ namespace wdk::build_16299
                 UINT32 PicoNotifyExit : 1; /* bit position: 20 */
                 UINT32 DbgWerUserReportActive : 1; /* bit position: 21 */
                 UINT32 ForcedSelfTrimActive : 1; /* bit position: 22 */
-                UINT32 ReservedCrossThreadFlags : 9; /* bit position: 23 */
+                UINT32 SamplingCoverage : 1; /* bit position: 23 */
+                UINT32 ReservedCrossThreadFlags : 8; /* bit position: 24 */
             }; /* bitfield */
         }; /* size: 0x0004 */
         union

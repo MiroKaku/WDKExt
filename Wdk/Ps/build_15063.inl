@@ -10,8 +10,8 @@
 namespace wdk::build_15063
 {
 
-    using build_10586::NumberOfProcessor;
-    SameDefine$(build_10586, KAFFINITY_EX);
+    using build_14393::NumberOfProcessor;
+    SameDefine$(build_14393, KAFFINITY_EX);
 
     
     typedef struct _KPROCESS
