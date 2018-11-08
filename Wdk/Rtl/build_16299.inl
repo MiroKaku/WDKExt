@@ -9,4 +9,9 @@
 
 namespace wdk::build_16299
 {
+
+    SameDefine$(build_15063, RTL_BALANCED_NODE);
+    SameDefine$(build_15063, RTL_AVL_TREE);
+    SameDefine$(build_15063, RTL_RB_TREE);
+
 }

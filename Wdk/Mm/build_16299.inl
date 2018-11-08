@@ -9,4 +9,9 @@
 
 namespace wdk::build_16299
 {
+
+    SameDefine$(build_15063, MMSUPPORT_INSTANCE);
+    SameDefine$(build_15063, MMSUPPORT_SHARED);
+    SameDefine$(build_15063, MMSUPPORT_FULL);
+
 }

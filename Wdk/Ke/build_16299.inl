@@ -9,4 +9,10 @@
 
 namespace wdk::build_16299
 {
+
+    SameDefine$(build_15063, KWAIT_STATUS_REGISTER);
+    SameDefine$(build_15063, KLOCK_ENTRY_LOCK_STATE);
+    SameDefine$(build_15063, KLOCK_ENTRY_BOOST_BITMAP);
+    SameDefine$(build_15063, KLOCK_ENTRY);
+
 }
