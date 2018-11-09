@@ -117,61 +117,101 @@ namespace wdk
     // DriverSection
     typedef struct _KLDR_DATA_TABLE_ENTRY
     {
-        LIST_ENTRY  InLoadOrderLinks;
-        PVOID       ExceptionTable;
-        UINT32      ExceptionTableSize;
-        PVOID       GpValue;
-        struct _NON_PAGED_DEBUG_INFO *NonPagedDebugInfo;
-        PVOID       DllBase;
-        PVOID       EntryPoint;
-        UINT32      SizeOfImage;
-        UNICODE_STRING FullDllName;
-        UNICODE_STRING BaseDllName;
+        struct _LIST_ENTRY InLoadOrderLinks;
+        VOID* ExceptionTable;
+        UINT32 ExceptionTableSize;
+        VOID* GpValue;
+        struct _NON_PAGED_DEBUG_INFO* NonPagedDebugInfo;
+        VOID* DllBase;
+        VOID* EntryPoint;
+        UINT32 SizeOfImage;
+        struct _UNICODE_STRING FullDllName;
+        struct _UNICODE_STRING BaseDllName;
         union
         {
+            enum : UINT32
+            {
+                KLDR_STATIC_LINK                = 0x00000002,
+                KLDR_IMAGE_DLL                  = 0x00000004,
+
+                KLDR_INTEGRITY_CHECK            = 0x00000020,
+                
+                KLDR_LOAD_IN_PROGRESS           = 0x00001000,
+                KLDR_UNLOAD_IN_PROGRESS         = 0x00002000,
+                KLDR_ENTRY_PROCESSED            = 0x00004000,
+                KLDR_ENTRY_INSERTED             = 0x00008000,
+
+                KLDR_DEBUG_SYMBOLS_LOADED       = 0x00100000,
+
+                KLDR_SYSTEM_MAPPED              = 0x01000000,
+                KLDR_IMAGE_VERIFYING            = 0x02000000,
+                KLDR_DRIVER_DEPENDENT_DLL       = 0x04000000,
+                KLDR_ENTRY_NATIVE               = 0x08000000,
+
+                KLDR_REDIRECTED                 = 0x10000000,
+                KLDR_NON_PAGED_DEBUG_INFO       = 0x20000000,
+                KLDR_MM_LOADED                  = 0x40000000,
+                KLDR_COMPAT_DATABASE_PROCESSED  = 0x80000000,
+            };
+
             UINT32      Flags;
             struct
             {
-                UINT32 _ReservedFlags0 : 1;
-                UINT32 StaticImport : 1;
-                UINT32 ImageDll : 1;
-                UINT32 _ReservedFlags1 : 2;
-                UINT32 IntegrityCheck : 1;
-                UINT32 _ReservedFlags2 : 8;
-                UINT32 EntryProcessed : 1;
-                UINT32 _ReservedFlags3 : 5;
-                UINT32 DebugSymbolsLoaded : 1;
-                UINT32 _ReservedFlags4 : 3;
-                UINT32 SystemMapped : 1;
-                UINT32 ImageVerifying : 1;
-                UINT32 DriverDependentDll : 1;
-                UINT32 EntryNative : 1;
-                UINT32 Redirected : 1;
-                UINT32 NonPagedDebug : 1;
-                UINT32 MmLoaded : 1;
-                UINT32 CompatDatabaseProcessed : 1;
-            };
+                UINT32 ReservedFlags0 : 1; /* bit position: 0 */
+                UINT32 StaticImport : 1; /* bit position: 1 */
+                UINT32 ImageDll : 1; /* bit position: 2 */
+                UINT32 ReservedFlags1 : 1; /* bit position: 3 */
+
+                UINT32 ReservedFlags2 : 1; /* bit position: 4 */
+                UINT32 IntegrityCheck : 1; /* bit position: 5 */
+                UINT32 ReservedFlags3 : 2; /* bit position: 6 */
+
+                UINT32 ReservedFlags4 : 4; /* bit position: 8 */
+
+                UINT32 LoadInProgress : 1; /* bit position: 12 */
+                UINT32 UnloadInProgress : 1; /* bit position: 13 */
+                UINT32 EntryProcessed : 1; /* bit position: 14 */
+                UINT32 EntryInserted : 1; /* bit position: 15 */
+
+                UINT32 ReservedFlags5 : 4; /* bit position: 16 */
+
+                UINT32 DebugSymbolsLoaded : 1; /* bit position: 20 */
+                UINT32 ReservedFlags6 : 3; /* bit position: 21 */
+
+                UINT32 SystemMapped : 1; /* bit position: 24 */
+                UINT32 ImageVerifying : 1; /* bit position: 25 */
+                UINT32 DriverDependentDll : 1; /* bit position: 26 */
+                UINT32 EntryNative : 1; /* bit position: 27 */
+
+                UINT32 Redirected : 1; /* bit position: 28 */
+                UINT32 NonPagedDebugInfo : 1; /* bit position: 29 */
+                UINT32 MmLoaded : 1; /* bit position: 30 */
+                UINT32 CompatDatabaseProcessed : 1; /* bit position: 31 */
+            }FlagsField;
         };
-        UINT16      LoadCount;
+        UINT16 LoadCount;
         union
         {
-            struct
+            union
             {
-                UINT16 SignatureLevel : 4;
-                UINT16 SignatureType : 3;
-                UINT16 Unused : 9;
-            };
-            UINT16 EntireField;
-        } Signature;
-        PVOID   SectionPointer;
-        UINT32  CheckSum;
-        UINT32  CoverageSectionSize;
-        PVOID   CoverageSection;
-        PVOID   LoadedImports;
-        PVOID   Spare;
-        UINT32  SizeOfImageNotRounded;
-        UINT32  TimeDateStamp;
-    } KLDR_DATA_TABLE_ENTRY, *PKLDR_DATA_TABLE_ENTRY;
+                struct
+                {
+                    UINT16 SignatureLevel : 4; /* bit position: 0 */
+                    UINT16 SignatureType : 3; /* bit position: 4 */
+                    UINT16 Unused : 9; /* bit position: 7 */
+                };
+                UINT16 EntireField;
+            }; /* size: 0x0002 */
+        }u1;
+        VOID* SectionPointer;
+        UINT32 CheckSum;
+        UINT32 CoverageSectionSize;
+        VOID* CoverageSection;
+        VOID* LoadedImports;
+        VOID* Spare;
+        UINT32 SizeOfImageNotRounded;
+        UINT32 TimeDateStamp;
+    } KLDR_DATA_TABLE_ENTRY, *PKLDR_DATA_TABLE_ENTRY; /* size: 0x00a0 */ /* size: 0x005c */
     static_assert(sizeof(KLDR_DATA_TABLE_ENTRY) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0xA0 : 0x5C));
 
 
@@ -200,36 +240,37 @@ namespace wdk
             UINT32 Flags;
             struct
             {
-                UINT32 PackagedBinary : 1;
-                UINT32 MarkedForRemoval : 1;
-                UINT32 ImageDll : 1;
-                UINT32 LoadNotificationsSent : 1;
-                UINT32 TelemetryEntryProcessed : 1;
-                UINT32 ProcessStaticImport : 1;
-                UINT32 InLegacyLists : 1;
-                UINT32 InIndexes : 1;
-                UINT32 ShimDll : 1;
-                UINT32 InExceptionTable : 1;
-                UINT32 ReservedFlags1 : 2;
-                UINT32 LoadInProgress : 1;
-                UINT32 LoadConfigProcessed : 1;
-                UINT32 EntryProcessed : 1;
-                UINT32 ProtectDelayLoad : 1;
-                UINT32 ReservedFlags3 : 2;
-                UINT32 DontCallForThreads : 1;
-                UINT32 ProcessAttachCalled : 1;
-                UINT32 ProcessAttachFailed : 1;
-                UINT32 CorDeferredValidate : 1;
-                UINT32 CorImage : 1;
-                UINT32 DontRelocate : 1;
-                UINT32 CorILOnly : 1;
-                UINT32 ReservedFlags5 : 3;
-                UINT32 Redirected : 1;
-                UINT32 ReservedFlags6 : 2;
-                UINT32 CompatDatabaseProcessed : 1;
+                UINT32 PackagedBinary : 1; /* bit position: 0 */
+                UINT32 MarkedForRemoval : 1; /* bit position: 1 */
+                UINT32 ImageDll : 1; /* bit position: 2 */
+                UINT32 LoadNotificationsSent : 1; /* bit position: 3 */
+                UINT32 TelemetryEntryProcessed : 1; /* bit position: 4 */
+                UINT32 ProcessStaticImport : 1; /* bit position: 5 */
+                UINT32 InLegacyLists : 1; /* bit position: 6 */
+                UINT32 InIndexes : 1; /* bit position: 7 */
+                UINT32 ShimDll : 1; /* bit position: 8 */
+                UINT32 InExceptionTable : 1; /* bit position: 9 */
+                UINT32 ReservedFlags1 : 2; /* bit position: 10 */
+                UINT32 LoadInProgress : 1; /* bit position: 12 */
+                UINT32 LoadConfigProcessed : 1; /* bit position: 13 */
+                UINT32 EntryProcessed : 1; /* bit position: 14 */
+                UINT32 ProtectDelayLoad : 1; /* bit position: 15 */
+                UINT32 ReservedFlags3 : 2; /* bit position: 16 */
+                UINT32 DontCallForThreads : 1; /* bit position: 18 */
+                UINT32 ProcessAttachCalled : 1; /* bit position: 19 */
+                UINT32 ProcessAttachFailed : 1; /* bit position: 20 */
+                UINT32 CorDeferredValidate : 1; /* bit position: 21 */
+                UINT32 CorImage : 1; /* bit position: 22 */
+                UINT32 DontRelocate : 1; /* bit position: 23 */
+                UINT32 CorILOnly : 1; /* bit position: 24 */
+                UINT32 ChpeImage : 1; /* bit position: 25 */
+                UINT32 ReservedFlags5 : 2; /* bit position: 26 */
+                UINT32 Redirected : 1; /* bit position: 28 */
+                UINT32 ReservedFlags6 : 2; /* bit position: 29 */
+                UINT32 CompatDatabaseProcessed : 1; /* bit position: 31 */
             };
         };
-        UINT16      LoadCount;
+        UINT16      ObsoleteLoadCount;
         UINT16      TlsIndex;
         LIST_ENTRY  HashLinks;
         UINT32      TimeDateStamp;

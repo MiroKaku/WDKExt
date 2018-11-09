@@ -313,10 +313,10 @@ namespace wdk
 
     typedef struct _OBJECT_HEADER
     {
-        SIZE_T PointerCount;
+        SSIZE_T PointerCount;
         union
         {
-            SIZE_T  HandleCount;
+            SSIZE_T  HandleCount;
             PVOID   NextToFree;
         };
         EX_PUSH_LOCK Lock;
@@ -404,6 +404,13 @@ namespace wdk
 
         // OB_CALLBACK_OBJECT_BODY Body[BodyCount];
     };
+
+    
+    typedef struct _OBJECT_DIRECTORY_INFORMATION
+    {
+        UNICODE_STRING Name;
+        UNICODE_STRING TypeName;
+    } OBJECT_DIRECTORY_INFORMATION, *POBJECT_DIRECTORY_INFORMATION;
 
 }
 
