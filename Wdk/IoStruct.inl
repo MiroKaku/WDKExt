@@ -4,14 +4,6 @@
 namespace wdk
 {
 
-    // private
-    typedef struct _FILE_IO_COMPLETION_INFORMATION
-    {
-        PVOID KeyContext;
-        PVOID ApcContext;
-        IO_STATUS_BLOCK IoStatusBlock;
-    } FILE_IO_COMPLETION_INFORMATION, *PFILE_IO_COMPLETION_INFORMATION;
-
 }
 
 #include "Io\build_7600.inl"

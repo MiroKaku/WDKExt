@@ -4,6 +4,7 @@
 namespace wdk
 {
     
+#pragma region AccessMask
     enum DbgkAccessMask : ACCESS_MASK
     {
         DebugReadEvent          = 0x0001,
@@ -14,11 +15,8 @@ namespace wdk
         DEBUG_ALL_ACCESS = StandardRightsRequired | Synchronize | 
         DebugReadEvent | DebugProcessAssign | DebugSetInformation | DebugQueryInformation
     };
+#pragma endregion
 
-    enum : ULONG
-    {
-        DEBUG_KILL_ON_CLOSE = 0x1
-    };
 
 }
 

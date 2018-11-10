@@ -4,7 +4,7 @@
 namespace wdk
 {
 
-
+#pragma region Handle
     using ExEnumHandleRoutineWin7 = BOOLEAN(*)(
         _Inout_ struct _HANDLE_TABLE_ENTRY* HandleTableEntry,
         _In_ HANDLE Handle,
@@ -18,8 +18,10 @@ namespace wdk
         _In_ HANDLE Handle,
         _In_ PVOID EnumParameter
         );
+#pragma endregion
 
 
+#pragma region Lock
 #ifndef EX_PUSH_LOCK
 #define EX_PUSH_LOCK    ULONG_PTR
 #define PEX_PUSH_LOCK   ULONG_PTR*
@@ -82,7 +84,7 @@ namespace wdk
             ULONG_PTR   Value;
         };
     } EX_FAST_REF, *PEX_FAST_REF;
-    
+#pragma endregion
 
 }
 

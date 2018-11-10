@@ -5,6 +5,7 @@
 namespace wdk
 {
 
+#pragma region AccessMask
     enum ObjectAttributesMask : ACCESS_MASK
     {
         ObjectInherit           = 0x00000002,
@@ -19,8 +20,10 @@ namespace wdk
         ObjectDontReparse       = 0x00001000,
         ObjectValidAttributes   = 0x00001FF2,
     };
+#pragma endregion
 
 
+#pragma region Object Initializer
     typedef struct _OBJECT_DUMP_CONTROL
     {
         PVOID Stream;
@@ -164,8 +167,10 @@ namespace wdk
         UINT16  WaitObjectFlagOffset;
         UINT16  WaitObjectPointerOffset;
     } OBJECT_TYPE_INITIALIZER, *POBJECT_TYPE_INITIALIZER;
+#pragma endregion
 
 
+#pragma region Object Header
     enum ObInfoMask : UINT8
     {
         ObInfoMaskCreatorInfo           = 0x01,
@@ -358,10 +363,11 @@ namespace wdk
         PVOID SecurityDescriptor;
         QUAD Body;
     } OBJECT_HEADER, *POBJECT_HEADER;
-    static_assert(sizeof(OBJECT_HEADER) == (sizeof(void*) == sizeof(__int32) ? 0x0020 : 0x0038),
-        "sizeof(OBJECT_HEADER) wrong! ");
+    static_assert(sizeof(OBJECT_HEADER) == (sizeof(void*) == sizeof(__int32) ? 0x0020 : 0x0038));
+#pragma endregion
 
 
+#pragma region ObRegisterCallbacks() Cookie
     // private
     // 
     // ObRegisterCallbacks() Cookie Memory layout
@@ -404,13 +410,17 @@ namespace wdk
 
         // OB_CALLBACK_OBJECT_BODY Body[BodyCount];
     };
+#pragma endregion
 
     
+#pragma region Other
     typedef struct _OBJECT_DIRECTORY_INFORMATION
     {
         UNICODE_STRING Name;
         UNICODE_STRING TypeName;
     } OBJECT_DIRECTORY_INFORMATION, *POBJECT_DIRECTORY_INFORMATION;
+#pragma endregion
+
 
 }
 

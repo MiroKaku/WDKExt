@@ -2761,4 +2761,20 @@ namespace wdk
     } TOKEN_INFORMATION_CLASS, *PTOKEN_INFORMATION_CLASS;
 #pragma endregion
 
+
+#pragma region Debug
+    typedef enum _DEBUGOBJECTINFOCLASS : UINT32
+    {
+        DebugObjectFlags    = 0x00000001,
+
+    } DEBUGOBJECTINFOCLASS, *PDEBUGOBJECTINFOCLASS;
+
+    enum DebugObjectFlagsMask: ULONG
+    {
+        DEBUG_KILL_ON_CLOSE = 0x1
+    };
+#pragma endregion
+
+
+
 }

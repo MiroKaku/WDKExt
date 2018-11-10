@@ -4,6 +4,7 @@
 namespace wdk
 {
 
+#pragma region PTE
     typedef struct _HARDWARE_PTE
     {
         enum : UINT64 { HARDWARE_PTE_WORKING_SET_BITS = 11 };
@@ -26,8 +27,10 @@ namespace wdk
         UINT64 NoExecute : 1;
     } HARDWARE_PTE, *PHARDWARE_PTE;
     static_assert(sizeof(HARDWARE_PTE) == 8, "sizeof(HARDWARE_PTE) != 8");
+#pragma endregion
 
     
+#pragma region Page
     enum PageAccessMask : ACCESS_MASK
     {
         PageNoAccess                = 0x00000001,
@@ -130,8 +133,10 @@ namespace wdk
         PAGE_WRITECOMBINE | PAGE_EXECUTE_READWRITE,
         PAGE_WRITECOMBINE | PAGE_EXECUTE_WRITECOPY
     };
+#pragma endregion
 
 
+#pragma region Mm Flags
     typedef struct _MMSUPPORT_FLAGS
     {
         union
@@ -171,7 +176,7 @@ namespace wdk
         }; /* size: 0x0001 */
     } MMSUPPORT_FLAGS, *PMMSUPPORT_FLAGS; /* size: 0x0004 */
     static_assert(sizeof(MMSUPPORT_FLAGS) == 0x0004);
-
+#pragma endregion
 
 
 

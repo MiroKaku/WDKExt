@@ -307,6 +307,7 @@ namespace wdk
             };
         }
 
+
         inline auto InitializePsProtection(PS_PROTECTION* aValue, PS_PROTECTED_SIGNER aSigner, BOOLEAN aAudit, PS_PROTECTED_TYPE aType)
             -> PS_PROTECTION*
         {
@@ -317,6 +318,252 @@ namespace wdk
             return aValue;
         }
         
+
+        inline auto PsGetProcessRundownProtect(PEPROCESS aProcess)
+            -> PEX_RUNDOWN_REF
+        {
+            auto vRundownProtect = PEX_RUNDOWN_REF();
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vRundownProtect = &reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vRundownProtect = &reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vRundownProtect = &reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vRundownProtect = &reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vRundownProtect = &reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vRundownProtect = &reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vRundownProtect = &reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vRundownProtect = &reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vRundownProtect = &reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vRundownProtect = &reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vRundownProtect = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            }
+
+            return vRundownProtect;
+        }
+
+
+        inline auto PsGetProcessSectionObject(PEPROCESS aProcess)
+            -> PVOID
+        {
+            auto vSectionObject = PVOID();
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vSectionObject = reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vSectionObject = reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vSectionObject = reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vSectionObject = reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vSectionObject = reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vSectionObject = reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vSectionObject = reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vSectionObject = reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vSectionObject = reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vSectionObject = reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vSectionObject = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            }
+
+            return vSectionObject;
+        }
+
+
+        inline auto PsGetProcessFlags(PEPROCESS aProcess)
+            -> UINT32
+        {
+            auto vFlags = UINT32();
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vFlags = reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vFlags = reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vFlags = reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vFlags = reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vFlags = reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vFlags = reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vFlags = reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vFlags = reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vFlags = reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vFlags = reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vFlags = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->Flags;
+                break;
+            }
+
+            return vFlags;
+        }
+
+
+        inline auto PsSetProcessFlags(PEPROCESS aProcess, UINT32 aFlags)
+            -> UINT32
+        {
+            auto vFlags = (UINT32*)(nullptr);
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vFlags = &reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vFlags = &reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vFlags = &reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vFlags = &reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vFlags = &reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vFlags = &reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vFlags = &reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vFlags = &reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vFlags = &reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vFlags = &reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vFlags = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->Flags;
+                break;
+            }
+
+            if (vFlags)
+            {
+                RtlInterlockedSetBitsDiscardReturn(vFlags, aFlags);
+            }
+        }
+        
+
+        inline auto PsClearProcessFlags(PEPROCESS aProcess, UINT32 aFlags)
+            -> UINT32
+        {
+            auto vFlags = (UINT32*)(nullptr);
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vFlags = &reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vFlags = &reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vFlags = &reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vFlags = &reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vFlags = &reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vFlags = &reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vFlags = &reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vFlags = &reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vFlags = &reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vFlags = &reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vFlags = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->Flags;
+                break;
+            }
+
+            if (vFlags)
+            {
+                RtlInterlockedClearBitsDiscardReturn(vFlags, aFlags);
+            }
+        }
+
 
         inline auto PsInitSystem() -> NTSTATUS
         {

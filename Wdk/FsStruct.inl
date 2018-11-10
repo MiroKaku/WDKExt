@@ -4,6 +4,7 @@
 namespace wdk
 {
 
+#pragma region Process
     // private
     typedef struct _PROCESS_DISK_COUNTERS
     {
@@ -53,7 +54,10 @@ namespace wdk
         ULONGLONG AttributedCycles[4][2];
         ULONGLONG WorkOnBehalfCycles[4][2];
     } PROCESS_ENERGY_VALUES, *PPROCESS_ENERGY_VALUES;
+#pragma endregion
 
+
+#pragma region File
     // private
     typedef struct _FILE_PATH
     {
@@ -62,6 +66,18 @@ namespace wdk
         ULONG Type;
         UCHAR FilePath[1];
     } FILE_PATH, *PFILE_PATH;
+
+
+    // private
+    typedef struct _FILE_IO_COMPLETION_INFORMATION
+    {
+        PVOID KeyContext;
+        PVOID ApcContext;
+        IO_STATUS_BLOCK IoStatusBlock;
+    } FILE_IO_COMPLETION_INFORMATION, *PFILE_IO_COMPLETION_INFORMATION;
+#pragma endregion
+
+
 }
 
 #include "Fs\build_7600.inl"

@@ -5,6 +5,7 @@
 namespace wdk
 {
     
+#pragma region AccessMask
     enum TsAccessMask : ACCESS_MASK
     {
         ThreadTerminate                 = 0x0001,
@@ -24,8 +25,10 @@ namespace wdk
 
         ThreadAllAccess = (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | 0xFFFF)
     };
+#pragma endregion
 
 
+#pragma region Context
     enum : UINT32
     {
         MaximumContextExtension = 512,
@@ -317,8 +320,514 @@ namespace wdk
 
     } *PCONTEXT32;
 #   pragma pack(pop)
+#pragma endregion
 
-       
+
+#pragma region General TEB
+    template<typename T = PVOID>
+    struct ACTIVATION_CONTEXT_STACK_T
+    {
+        using LIST_ENTRY = LIST_ENTRY_T<T>;
+
+        T /*struct _RTL_ACTIVATION_CONTEXT_STACK_FRAME**/ ActiveFrame;
+        LIST_ENTRY FrameListCache;
+        UINT32 Flags;
+        UINT32 NextCookieSequenceNumber;
+        UINT32 StackId;
+    }; /* size: 0x0028 */ /* size: 0x0018 */
+    
+    using ACTIVATION_CONTEXT_STACK   = ACTIVATION_CONTEXT_STACK_T<PVOID>;
+    using ACTIVATION_CONTEXT_STACK32 = ACTIVATION_CONTEXT_STACK_T<PVOID32>;
+    using ACTIVATION_CONTEXT_STACK64 = ACTIVATION_CONTEXT_STACK_T<PVOID64>;
+
+    using PACTIVATION_CONTEXT_STACK   = ACTIVATION_CONTEXT_STACK * ;
+    using PACTIVATION_CONTEXT_STACK32 = ACTIVATION_CONTEXT_STACK32 * ;
+    using PACTIVATION_CONTEXT_STACK64 = ACTIVATION_CONTEXT_STACK64 * ;
+
+    static_assert(sizeof(ACTIVATION_CONTEXT_STACK32) == 0x0018);
+    static_assert(sizeof(ACTIVATION_CONTEXT_STACK64) == 0x0028);
+
+
+    template<typename I = SIZE_T>
+    struct GDI_TEB_BATCH_T
+    {
+        struct /* bitfield */
+        {
+            UINT32 Offset : 31; /* bit position: 0 */
+            UINT32 HasRenderingCommand : 1; /* bit position: 31 */
+        }; /* bitfield */
+        I HDC;
+        UINT32 Buffer[310];
+    }; /* size: 0x04e8 */ /* size: 0x04e0 */
+
+    using GDI_TEB_BATCH = GDI_TEB_BATCH_T<SIZE_T>;
+    using GDI_TEB_BATCH32 = GDI_TEB_BATCH_T<UINT32>;
+    using GDI_TEB_BATCH64 = GDI_TEB_BATCH_T<UINT64>;
+
+    using PGDI_TEB_BATCH = GDI_TEB_BATCH * ;
+    using PGDI_TEB_BATCH32 = GDI_TEB_BATCH32 * ;
+    using PGDI_TEB_BATCH64 = GDI_TEB_BATCH64 * ;
+
+    static_assert(sizeof(GDI_TEB_BATCH32) == 0x04e0);
+    static_assert(sizeof(GDI_TEB_BATCH64) == 0x04e8);
+
+
+    typedef struct _TEB
+    {
+        enum : UINT32
+        {
+            StaticUnicodeBufferSize = 260 + 1, // MAX_PATH + 1
+
+            SystemReserveed1SizeX86 = 26,
+            SystemReserveed1SizeX64 = 30,
+            SystemReserveed1Size = sizeof(SIZE_T) == sizeof(UINT64) ? SystemReserveed1SizeX64 : SystemReserveed1SizeX86,
+
+            InstrumentationX86 = 9,
+            InstrumentationX64 = 11,
+            InstrumentationCount = sizeof(SIZE_T) == sizeof(UINT64) ? InstrumentationX64 : InstrumentationX86,
+        };
+
+        struct _NT_TIB NtTib;
+        VOID* EnvironmentPointer;
+        struct _CLIENT_ID ClientId;
+        VOID* ActiveRpcHandle;
+        VOID* ThreadLocalStoragePointer;
+        struct _PEB* ProcessEnvironmentBlock;
+        UINT32 LastErrorValue;
+        UINT32 CountOfOwnedCriticalSections;
+        VOID* CsrClientThread;
+        VOID* Win32ThreadInfo;
+        UINT32 User32Reserved[26];
+        UINT32 UserReserved[5];
+        VOID* WOW32Reserved;
+        UINT32 CurrentLocale;
+        UINT32 FpSoftwareStatusRegister;
+        VOID* ReservedForDebuggerInstrumentation[16];
+        VOID* SystemReserved1[SystemReserveed1Size];
+        CHAR PlaceholderCompatibilityMode;
+        UINT8 PlaceholderHydrationAlwaysExplicit;
+        CHAR PlaceholderReserved[10];
+        UINT32 ProxiedProcessId;
+        ACTIVATION_CONTEXT_STACK _ActivationStack;
+        UINT8 WorkingOnBehalfTicket[8];
+        INT32 ExceptionCode;
+        struct _ACTIVATION_CONTEXT_STACK* ActivationContextStackPointer;
+        SIZE_T InstrumentationCallbackSp;
+        SIZE_T InstrumentationCallbackPreviousPc;
+        SIZE_T InstrumentationCallbackPreviousSp;
+#ifdef _WIN64
+        UINT32 TxFsContext;
+#endif
+        UINT8 InstrumentationCallbackDisabled;
+#ifdef _WIN64
+        UINT8 UnalignedLoadStoreExceptions;
+#else
+        UINT8 SpareBytes[23];
+        UINT32 TxFsContext;
+#endif
+        GDI_TEB_BATCH GdiTebBatch;
+        struct _CLIENT_ID RealClientId;
+        VOID* GdiCachedProcessHandle;
+        UINT32 GdiClientPID;
+        UINT32 GdiClientTID;
+        VOID* GdiThreadLocalInfo;
+        SIZE_T Win32ClientInfo[62];
+        VOID* glDispatchTable[233];
+        SIZE_T glReserved1[29];
+        VOID* glReserved2;
+        VOID* glSectionInfo;
+        VOID* glSection;
+        VOID* glTable;
+        VOID* glCurrentRC;
+        VOID* glContext;
+        UINT32 LastStatusValue;
+        struct _UNICODE_STRING StaticUnicodeString;
+        WCHAR StaticUnicodeBuffer[StaticUnicodeBufferSize];
+        VOID* DeallocationStack;
+        VOID* TlsSlots[64];
+        struct _LIST_ENTRY TlsLinks;
+        VOID* Vdm;
+        VOID* ReservedForNtRpc;
+        VOID* DbgSsReserved[2];
+        UINT32 HardErrorMode;
+        VOID* Instrumentation[InstrumentationCount];
+        struct _GUID ActivityId;
+        VOID* SubProcessTag;
+        VOID* PerflibData;
+        VOID* EtwTraceData;
+        VOID* WinSockData;
+        UINT32 GdiBatchCount;
+        union
+        {
+            struct _PROCESSOR_NUMBER CurrentIdealProcessor;
+            UINT32 IdealProcessorValue;
+            struct
+            {
+                UINT8 ReservedPad0;
+                UINT8 ReservedPad1;
+                UINT8 ReservedPad2;
+                UINT8 IdealProcessor;
+            }; /* size: 0x0004 */
+        }; /* size: 0x0004 */
+        UINT32 GuaranteedStackBytes;
+        VOID* ReservedForPerf;
+        VOID* ReservedForOle;
+        UINT32 WaitingOnLoaderLock;
+        VOID* SavedPriorityState;
+        SIZE_T ReservedForCodeCoverage;
+        VOID* ThreadPoolData;
+        VOID** TlsExpansionSlots;
+#ifdef _WIN64
+        VOID* DeallocationBStore;
+        VOID* BStoreLimit;
+#endif
+        UINT32 MuiGeneration;
+        UINT32 IsImpersonating;
+        VOID* NlsCache;
+        VOID* pShimData;
+        UINT32 HeapData;
+        VOID* CurrentTransactionHandle;
+        struct _TEB_ACTIVE_FRAME* ActiveFrame;
+        VOID* FlsData;
+        VOID* PreferredLanguages;
+        VOID* UserPrefLanguages;
+        VOID* MergedPrefLanguages;
+        UINT32 MuiImpersonation;
+        union
+        {
+            volatile UINT16 CrossTebFlags;
+            UINT16 SpareCrossTebBits : 16; /* bit position: 0 */
+        }; /* size: 0x0002 */
+        union
+        {
+            UINT16 SameTebFlags;
+            struct /* bitfield */
+            {
+                UINT16 SafeThunkCall : 1; /* bit position: 0 */
+                UINT16 InDebugPrint : 1; /* bit position: 1 */
+                UINT16 HasFiberData : 1; /* bit position: 2 */
+                UINT16 SkipThreadAttach : 1; /* bit position: 3 */
+                UINT16 WerInShipAssertCode : 1; /* bit position: 4 */
+                UINT16 RanProcessInit : 1; /* bit position: 5 */
+                UINT16 ClonedThread : 1; /* bit position: 6 */
+                UINT16 SuppressDebugMsg : 1; /* bit position: 7 */
+                UINT16 DisableUserStackWalk : 1; /* bit position: 8 */
+                UINT16 RtlExceptionAttached : 1; /* bit position: 9 */
+                UINT16 InitialThread : 1; /* bit position: 10 */
+                UINT16 SessionAware : 1; /* bit position: 11 */
+                UINT16 LoadOwner : 1; /* bit position: 12 */
+                UINT16 LoaderWorker : 1; /* bit position: 13 */
+                UINT16 SkipLoaderInit : 1; /* bit position: 14 */
+                UINT16 SpareSameTebBits : 1; /* bit position: 15 */
+            }; /* bitfield */
+        }; /* size: 0x0002 */
+        VOID* TxnScopeEnterCallback;
+        VOID* TxnScopeExitCallback;
+        VOID* TxnScopeContext;
+        UINT32 LockCount;
+        INT32 WowTebOffset;
+    } TEB, *PTEB; /* size: 0x1810 */ /* size: 0x0fe0 */
+    static_assert(sizeof(TEB) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x1810 : 0x0fe0));
+
+
+    typedef struct _TEB32
+    {
+        enum : UINT32
+        {
+            StaticUnicodeBufferSize = 260 + 1, // MAX_PATH + 1
+
+            SystemReserveed1SizeX86 = 26,
+            SystemReserveed1SizeX64 = 30,
+            SystemReserveed1Size = sizeof(SIZE_T) == sizeof(UINT64) ? SystemReserveed1SizeX64 : SystemReserveed1SizeX86,
+
+            InstrumentationX86 = 9,
+            InstrumentationX64 = 11,
+            InstrumentationCount = sizeof(SIZE_T) == sizeof(UINT64) ? InstrumentationX64 : InstrumentationX86,
+        };
+
+        struct _NT_TIB32 NtTib;
+        PVOID32 EnvironmentPointer;
+        CLIENT_ID32 ClientId;
+        PVOID32 ActiveRpcHandle;
+        PVOID32 ThreadLocalStoragePointer;
+        PVOID32 /*struct _PEB32**/ ProcessEnvironmentBlock;
+        UINT32 LastErrorValue;
+        UINT32 CountOfOwnedCriticalSections;
+        PVOID32 CsrClientThread;
+        PVOID32 Win32ThreadInfo;
+        UINT32 User32Reserved[26];
+        UINT32 UserReserved[5];
+        PVOID32 WOW32Reserved;
+        UINT32 CurrentLocale;
+        UINT32 FpSoftwareStatusRegister;
+        PVOID32 ReservedForDebuggerInstrumentation[16];
+        PVOID32 SystemReserved1[SystemReserveed1SizeX86];
+        CHAR PlaceholderCompatibilityMode;
+        UINT8 PlaceholderHydrationAlwaysExplicit;
+        CHAR PlaceholderReserved[10];
+        UINT32 ProxiedProcessId;
+        ACTIVATION_CONTEXT_STACK32 _ActivationStack;
+        UINT8 WorkingOnBehalfTicket[8];
+        INT32 ExceptionCode;
+        PVOID32 /*struct _ACTIVATION_CONTEXT_STACK32**/ ActivationContextStackPointer;
+        UINT32 InstrumentationCallbackSp;
+        UINT32 InstrumentationCallbackPreviousPc;
+        UINT32 InstrumentationCallbackPreviousSp;
+        UINT8 InstrumentationCallbackDisabled;
+        UINT8 SpareBytes[23];
+        UINT32 TxFsContext;
+        GDI_TEB_BATCH32 GdiTebBatch;
+        CLIENT_ID32 RealClientId;
+        PVOID32 GdiCachedProcessHandle;
+        UINT32 GdiClientPID;
+        UINT32 GdiClientTID;
+        PVOID32 GdiThreadLocalInfo;
+        UINT32 Win32ClientInfo[62];
+        PVOID32 glDispatchTable[233];
+        UINT32 glReserved1[29];
+        PVOID32 glReserved2;
+        PVOID32 glSectionInfo;
+        PVOID32 glSection;
+        PVOID32 glTable;
+        PVOID32 glCurrentRC;
+        PVOID32 glContext;
+        UINT32 LastStatusValue;
+        UNICODE_STRING32 StaticUnicodeString;
+        WCHAR StaticUnicodeBuffer[StaticUnicodeBufferSize];
+        PVOID32 DeallocationStack;
+        PVOID32 TlsSlots[64];
+        LIST_ENTRY32 TlsLinks;
+        PVOID32 Vdm;
+        PVOID32 ReservedForNtRpc;
+        PVOID32 DbgSsReserved[2];
+        UINT32 HardErrorMode;
+        PVOID32 Instrumentation[InstrumentationX86];
+        struct _GUID ActivityId;
+        PVOID32 SubProcessTag;
+        PVOID32 PerflibData;
+        PVOID32 EtwTraceData;
+        PVOID32 WinSockData;
+        UINT32 GdiBatchCount;
+        union
+        {
+            struct _PROCESSOR_NUMBER CurrentIdealProcessor;
+            UINT32 IdealProcessorValue;
+            struct
+            {
+                UINT8 ReservedPad0;
+                UINT8 ReservedPad1;
+                UINT8 ReservedPad2;
+                UINT8 IdealProcessor;
+            }; /* size: 0x0004 */
+        }; /* size: 0x0004 */
+        UINT32 GuaranteedStackBytes;
+        PVOID32 ReservedForPerf;
+        PVOID32 ReservedForOle;
+        UINT32 WaitingOnLoaderLock;
+        PVOID32 SavedPriorityState;
+        UINT32 ReservedForCodeCoverage;
+        PVOID32 ThreadPoolData;
+        PVOID32 /*VOID***/ TlsExpansionSlots;
+        UINT32 MuiGeneration;
+        UINT32 IsImpersonating;
+        PVOID32 NlsCache;
+        PVOID32 pShimData;
+        UINT32 HeapData;
+        PVOID32 CurrentTransactionHandle;
+        PVOID32 /*struct _TEB_ACTIVE_FRAME**/ ActiveFrame;
+        PVOID32 FlsData;
+        PVOID32 PreferredLanguages;
+        PVOID32 UserPrefLanguages;
+        PVOID32 MergedPrefLanguages;
+        UINT32 MuiImpersonation;
+        union
+        {
+            volatile UINT16 CrossTebFlags;
+            UINT16 SpareCrossTebBits : 16; /* bit position: 0 */
+        }; /* size: 0x0002 */
+        union
+        {
+            UINT16 SameTebFlags;
+            struct /* bitfield */
+            {
+                UINT16 SafeThunkCall : 1; /* bit position: 0 */
+                UINT16 InDebugPrint : 1; /* bit position: 1 */
+                UINT16 HasFiberData : 1; /* bit position: 2 */
+                UINT16 SkipThreadAttach : 1; /* bit position: 3 */
+                UINT16 WerInShipAssertCode : 1; /* bit position: 4 */
+                UINT16 RanProcessInit : 1; /* bit position: 5 */
+                UINT16 ClonedThread : 1; /* bit position: 6 */
+                UINT16 SuppressDebugMsg : 1; /* bit position: 7 */
+                UINT16 DisableUserStackWalk : 1; /* bit position: 8 */
+                UINT16 RtlExceptionAttached : 1; /* bit position: 9 */
+                UINT16 InitialThread : 1; /* bit position: 10 */
+                UINT16 SessionAware : 1; /* bit position: 11 */
+                UINT16 LoadOwner : 1; /* bit position: 12 */
+                UINT16 LoaderWorker : 1; /* bit position: 13 */
+                UINT16 SkipLoaderInit : 1; /* bit position: 14 */
+                UINT16 SpareSameTebBits : 1; /* bit position: 15 */
+            }; /* bitfield */
+        }; /* size: 0x0002 */
+        PVOID32 TxnScopeEnterCallback;
+        PVOID32 TxnScopeExitCallback;
+        PVOID32 TxnScopeContext;
+        UINT32 LockCount;
+        INT32 WowTebOffset;
+    } TEB32, *PTEB32; /* size: 0x1810 */ /* size: 0x0fe0 */
+    static_assert(sizeof(TEB32) == 0x0fe0);
+
+
+    typedef struct _TEB64
+    {
+        enum : UINT32
+        {
+            StaticUnicodeBufferSize = 260 + 1, // MAX_PATH + 1
+
+            SystemReserveed1SizeX86 = 26,
+            SystemReserveed1SizeX64 = 30,
+            SystemReserveed1Size = sizeof(SIZE_T) == sizeof(UINT64) ? SystemReserveed1SizeX64 : SystemReserveed1SizeX86,
+
+            InstrumentationX86 = 9,
+            InstrumentationX64 = 11,
+            InstrumentationCount = sizeof(SIZE_T) == sizeof(UINT64) ? InstrumentationX64 : InstrumentationX86,
+        };
+
+        struct _NT_TIB64 NtTib;
+        PVOID64 EnvironmentPointer;
+        CLIENT_ID64 ClientId;
+        PVOID64 ActiveRpcHandle;
+        PVOID64 ThreadLocalStoragePointer;
+        PVOID64 /*struct _PEB64**/ ProcessEnvironmentBlock;
+        UINT32 LastErrorValue;
+        UINT32 CountOfOwnedCriticalSections;
+        PVOID64 CsrClientThread;
+        PVOID64 Win32ThreadInfo;
+        UINT32 User32Reserved[26];
+        UINT32 UserReserved[5];
+        PVOID64 WOW32Reserved;
+        UINT32 CurrentLocale;
+        UINT32 FpSoftwareStatusRegister;
+        PVOID64 ReservedForDebuggerInstrumentation[16];
+        PVOID64 SystemReserved1[SystemReserveed1SizeX64];
+        CHAR PlaceholderCompatibilityMode;
+        UINT8 PlaceholderHydrationAlwaysExplicit;
+        CHAR PlaceholderReserved[10];
+        UINT32 ProxiedProcessId;
+        ACTIVATION_CONTEXT_STACK64 _ActivationStack;
+        UINT8 WorkingOnBehalfTicket[8];
+        INT32 ExceptionCode;
+        PVOID64 /*struct _ACTIVATION_CONTEXT_STACK64**/ ActivationContextStackPointer;
+        UINT64 InstrumentationCallbackSp;
+        UINT64 InstrumentationCallbackPreviousPc;
+        UINT64 InstrumentationCallbackPreviousSp;
+        UINT32 TxFsContext;
+        UINT8 InstrumentationCallbackDisabled;
+        UINT8 UnalignedLoadStoreExceptions;
+        GDI_TEB_BATCH64 GdiTebBatch;
+        CLIENT_ID64 RealClientId;
+        PVOID64 GdiCachedProcessHandle;
+        UINT32 GdiClientPID;
+        UINT32 GdiClientTID;
+        PVOID64 GdiThreadLocalInfo;
+        UINT64 Win32ClientInfo[62];
+        PVOID64 glDispatchTable[233];
+        UINT64 glReserved1[29];
+        PVOID64 glReserved2;
+        PVOID64 glSectionInfo;
+        PVOID64 glSection;
+        PVOID64 glTable;
+        PVOID64 glCurrentRC;
+        PVOID64 glContext;
+        UINT32 LastStatusValue;
+        UNICODE_STRING64 StaticUnicodeString;
+        WCHAR StaticUnicodeBuffer[StaticUnicodeBufferSize];
+        PVOID64 DeallocationStack;
+        PVOID64 TlsSlots[64];
+        LIST_ENTRY64 TlsLinks;
+        PVOID64 Vdm;
+        PVOID64 ReservedForNtRpc;
+        PVOID64 DbgSsReserved[2];
+        UINT32 HardErrorMode;
+        PVOID64 Instrumentation[InstrumentationX64];
+        struct _GUID ActivityId;
+        PVOID64 SubProcessTag;
+        PVOID64 PerflibData;
+        PVOID64 EtwTraceData;
+        PVOID64 WinSockData;
+        UINT32 GdiBatchCount;
+        union
+        {
+            struct _PROCESSOR_NUMBER CurrentIdealProcessor;
+            UINT32 IdealProcessorValue;
+            struct
+            {
+                UINT8 ReservedPad0;
+                UINT8 ReservedPad1;
+                UINT8 ReservedPad2;
+                UINT8 IdealProcessor;
+            }; /* size: 0x0004 */
+        }; /* size: 0x0004 */
+        UINT32 GuaranteedStackBytes;
+        PVOID64 ReservedForPerf;
+        PVOID64 ReservedForOle;
+        UINT32 WaitingOnLoaderLock;
+        PVOID64 SavedPriorityState;
+        UINT64 ReservedForCodeCoverage;
+        PVOID64 ThreadPoolData;
+        PVOID64 /*VOID***/ TlsExpansionSlots;
+        PVOID64 DeallocationBStore;
+        PVOID64 BStoreLimit;
+        UINT32 MuiGeneration;
+        UINT32 IsImpersonating;
+        PVOID64 NlsCache;
+        PVOID64 pShimData;
+        UINT32 HeapData;
+        PVOID64 CurrentTransactionHandle;
+        PVOID64 /*struct _TEB_ACTIVE_FRAME**/ ActiveFrame;
+        PVOID64 FlsData;
+        PVOID64 PreferredLanguages;
+        PVOID64 UserPrefLanguages;
+        PVOID64 MergedPrefLanguages;
+        UINT32 MuiImpersonation;
+        union
+        {
+            volatile UINT16 CrossTebFlags;
+            UINT16 SpareCrossTebBits : 16; /* bit position: 0 */
+        }; /* size: 0x0002 */
+        union
+        {
+            UINT16 SameTebFlags;
+            struct /* bitfield */
+            {
+                UINT16 SafeThunkCall : 1; /* bit position: 0 */
+                UINT16 InDebugPrint : 1; /* bit position: 1 */
+                UINT16 HasFiberData : 1; /* bit position: 2 */
+                UINT16 SkipThreadAttach : 1; /* bit position: 3 */
+                UINT16 WerInShipAssertCode : 1; /* bit position: 4 */
+                UINT16 RanProcessInit : 1; /* bit position: 5 */
+                UINT16 ClonedThread : 1; /* bit position: 6 */
+                UINT16 SuppressDebugMsg : 1; /* bit position: 7 */
+                UINT16 DisableUserStackWalk : 1; /* bit position: 8 */
+                UINT16 RtlExceptionAttached : 1; /* bit position: 9 */
+                UINT16 InitialThread : 1; /* bit position: 10 */
+                UINT16 SessionAware : 1; /* bit position: 11 */
+                UINT16 LoadOwner : 1; /* bit position: 12 */
+                UINT16 LoaderWorker : 1; /* bit position: 13 */
+                UINT16 SkipLoaderInit : 1; /* bit position: 14 */
+                UINT16 SpareSameTebBits : 1; /* bit position: 15 */
+            }; /* bitfield */
+        }; /* size: 0x0002 */
+        PVOID64 TxnScopeEnterCallback;
+        PVOID64 TxnScopeExitCallback;
+        PVOID64 TxnScopeContext;
+        UINT32 LockCount;
+        INT32 WowTebOffset;
+    } TEB64, *PTEB64; /* size: 0x1810 */ /* size: 0x0fe0 */
+    static_assert(sizeof(TEB64) == 0x1810);
+#pragma endregion
+
+
+#pragma region Other
     typedef union _PS_CLIENT_SECURITY_CONTEXT
     {
         union
@@ -346,6 +855,22 @@ namespace wdk
         struct _LIST_ENTRY ListHead;
         EX_PUSH_LOCK Lock;
     } PS_PROPERTY_SET, *PPS_PROPERTY_SET; /* size: 0x0018 */ /* size: 0x000c */
+
+
+    enum PsThreadCrossFlagMask : UINT32
+    {
+        PsCrossThreadFlagsTerminated                = 0x00000001,
+        PsCrossThreadFlagsThreadInserted            = 0x00000002,
+        PsCrossThreadFlagsHideFromDebugger          = 0x00000004,
+        PsCrossThreadFlagsActiveImpersonationInfo   = 0x00000008,
+        PsCrossThreadFlagsHardErrorsAreDisabled     = 0x00000010,
+        PsCrossThreadFlagsBreakOnTermination        = 0x00000020,
+        PsCrossThreadFlagsSkipCreationMsg           = 0x00000040,
+        PsCrossThreadFlagsSkipTerminationMsg        = 0x00000080,
+
+        // ...
+    };
+#pragma endregion
 
 
 }
