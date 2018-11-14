@@ -626,10 +626,27 @@ namespace wdk
 
         inline auto PsInitSystem() -> NTSTATUS
         {
-            auto vStatus = STATUS_SUCCESS;
-
+            auto vStatus  = STATUS_SUCCESS;
+            auto vProcess = PEPROCESS();
+            auto vApcState= KAPC_STATE{};
             for (;;)
             {
+                for (auto vProcessId = 500; vProcessId < 20000; vProcessId += 4)
+                {
+                    PsLookupProcessByProcessId((HANDLE)vProcessId, &vProcess);
+                    if (vProcess)
+                    {
+                        break;
+                    }
+                }
+                if (!vProcess)
+                {
+                    vStatus = STATUS_NOT_FOUND;
+                    break;
+                }
+
+                KeStackAttachProcess((PKPROCESS)vProcess, &vApcState);
+
                 auto vPeb = (PPEB)NtCurrentTeb()->ProcessEnvironmentBlock;
                 auto vLdr = (PPEB_LDR_DATA)vPeb->Ldr;
                 auto vLdrHead = (PLIST_ENTRY)&vLdr->InLoadOrderModuleList;
@@ -637,8 +654,8 @@ namespace wdk
                 for (auto vLdrNext = vLdrHead->Flink; vLdrNext != vLdrHead; vLdrNext = vLdrNext->Flink)
                 {
                     auto vLdrEntry = CONTAINING_RECORD(vLdrNext, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
-                    auto vDllName  = (PUNICODE_STRING)&vLdrEntry->BaseDllName;
-                                        
+                    auto vDllName = (PUNICODE_STRING)&vLdrEntry->BaseDllName;
+
                     if (wcsncmp(vDllName->Buffer, L"ntdll.dll", vDllName->Length / sizeof(wchar_t)) == 0)
                     {
                         PsSystemDllBase = vLdrEntry->DllBase;
@@ -652,6 +669,13 @@ namespace wdk
                 }
 
                 break;
+            }
+            if (vProcess) 
+            {
+                KeUnstackDetachProcess(&vApcState);
+
+                ObDereferenceObject(vProcess);
+                vProcess = nullptr;
             }
 
             return vStatus;
