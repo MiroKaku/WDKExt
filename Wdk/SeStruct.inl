@@ -487,6 +487,38 @@ namespace wdk
     {
         PSID Owner;
     } TOKEN_OWNER, *PTOKEN_OWNER;
+
+    typedef struct _TOKEN_SOURCE
+    {
+        enum : UINT32
+        {
+            TokenSourceLength = 8
+        };
+
+        CHAR SourceName[TokenSourceLength];
+        LUID SourceIdentifier;
+    } TOKEN_SOURCE, *PTOKEN_SOURCE;
+
+    typedef struct _TOKEN_CONTROL
+    {
+        LUID TokenId;
+        LUID AuthenticationId;
+        LUID ModifiedId;
+        TOKEN_SOURCE TokenSource;
+    } TOKEN_CONTROL, *PTOKEN_CONTROL;
+#pragma endregion
+
+
+#pragma region Other
+    typedef struct _SECURITY_CLIENT_CONTEXT
+    {
+        SECURITY_QUALITY_OF_SERVICE SecurityQos;
+        PACCESS_TOKEN ClientToken;
+        BOOLEAN DirectlyAccessClientToken;
+        BOOLEAN DirectAccessEffectiveOnly;
+        BOOLEAN ServerIsRemote;
+        TOKEN_CONTROL ClientTokenControl;
+    } SECURITY_CLIENT_CONTEXT, *PSECURITY_CLIENT_CONTEXT;
 #pragma endregion
 
 }

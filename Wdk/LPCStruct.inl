@@ -1,5 +1,6 @@
 #pragma once
 #include "ObStruct.inl"
+#include "SeStruct.inl"
 
 
 namespace wdk
@@ -103,19 +104,19 @@ namespace wdk
 
     typedef struct _PORT_VIEW
     {
-        ULONG Length;
-        HANDLE SectionHandle;
-        ULONG SectionOffset;
-        SIZE_T ViewSize;
-        PVOID ViewBase;
-        PVOID ViewRemoteBase;
+        ULONG   Length;
+        HANDLE  SectionHandle;
+        ULONG   SectionOffset;
+        SIZE_T  ViewSize;
+        PVOID   ViewBase;
+        PVOID   ViewRemoteBase;
     } PORT_VIEW, *PPORT_VIEW;
 
     typedef struct _REMOTE_PORT_VIEW
     {
-        ULONG Length;
-        SIZE_T ViewSize;
-        PVOID ViewBase;
+        ULONG   Length;
+        SIZE_T  ViewSize;
+        PVOID   ViewBase;
     } REMOTE_PORT_VIEW, *PREMOTE_PORT_VIEW;
 
     // WOW64 definitions
@@ -180,6 +181,64 @@ namespace wdk
         ULONGLONG ViewBase;
     } REMOTE_PORT_VIEW64, *PREMOTE_PORT_VIEW64;
 
+    typedef struct _LPCP_NONPAGED_PORT_QUEUE
+    {
+        KSEMAPHORE Semaphore;       // Counting semaphore that is incremented
+                                    // whenever a message is put in receive queue
+        struct _LPCP_PORT_OBJECT *BackPointer;
+    } LPCP_NONPAGED_PORT_QUEUE, *PLPCP_NONPAGED_PORT_QUEUE;
+
+    typedef struct _LPCP_PORT_QUEUE
+    {
+        PLPCP_NONPAGED_PORT_QUEUE NonPagedPortQueue;
+        PKSEMAPHORE Semaphore;      // Counting semaphore that is incremented
+                                    // whenever a message is put in receive queue
+        LIST_ENTRY ReceiveHead;     // list of messages to receive
+    } LPCP_PORT_QUEUE, *PLPCP_PORT_QUEUE;
+
+    typedef struct _LPCP_PORT_OBJECT
+    {
+        struct _LPCP_PORT_OBJECT *ConnectionPort;
+        struct _LPCP_PORT_OBJECT *ConnectedPort;
+        struct _LPCP_PORT_QUEUE MsgQueue;
+        CLIENT_ID Creator;
+        PVOID ClientSectionBase;
+        PVOID ServerSectionBase;
+        PVOID PortContext;
+        PETHREAD ClientThread;                  // only SERVER_COMMUNICATION_PORT
+        SECURITY_QUALITY_OF_SERVICE SecurityQos;
+        SECURITY_CLIENT_CONTEXT StaticSecurity;
+        LIST_ENTRY LpcReplyChainHead;           // Only in _COMMUNICATION ports
+        LIST_ENTRY LpcDataInfoChainHead;        // Only in _COMMUNICATION ports
+        union
+        {
+            PEPROCESS ServerProcess;                // Only in SERVER_CONNECTION ports
+            PEPROCESS MappingProcess;               // Only in _COMMUNICATION    ports
+        };
+        USHORT MaxMessageLength;
+        USHORT MaxConnectionInfoLength;
+        ULONG Flags;
+        KEVENT WaitEvent;                          // Object is truncated for non-waitable ports
+    } LPCP_PORT_OBJECT, *PLPCP_PORT_OBJECT;
+
+    typedef struct _LPCP_MESSAGE
+    {
+        union
+        {
+            LIST_ENTRY Entry;
+            struct
+            {
+                SINGLE_LIST_ENTRY FreeEntry;
+                ULONG Reserved0;
+            };
+        };
+
+        PVOID SenderPort;
+        PETHREAD RepliedToThread;               // Filled in when reply is sent so recipient
+                                                // of reply can dereference it.
+        PVOID PortContext;                      // Captured from senders communication port.
+        PORT_MESSAGE Request;
+    } LPCP_MESSAGE, *PLPCP_MESSAGE;
 }
 
 #include "LPC\build_7600.inl"

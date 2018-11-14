@@ -122,12 +122,30 @@ namespace wdk
         T       Buffer;
     };
 
-
 }
 
 
 namespace wdk
 {
+
+    template<typename T = PVOID>
+    FORCEINLINE auto InitializeListHead(
+        _Out_ LIST_ENTRY_T<T> * ListHead)
+        -> VOID
+
+    {
+        ListHead->Flink = ListHead->Blink = ListHead;
+    }
+
+
+    template<typename T = PVOID>
+    FORCEINLINE auto IsListEmpty(
+        _In_ const LIST_ENTRY_T<T> * ListHead)
+        -> BOOLEAN
+    {
+        return (BOOLEAN)(ListHead->Flink == ListHead);
+    }
+
 
     template<typename T = PVOID>
     FORCEINLINE auto RemoveEntryList(

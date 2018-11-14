@@ -1,5 +1,6 @@
 #pragma once
 #include "PsStruct.inl"
+#include "TsKernel.inl"
 
 
 namespace wdk
@@ -509,8 +510,10 @@ namespace wdk
 
             if (vFlags)
             {
-                RtlInterlockedSetBitsDiscardReturn(vFlags, aFlags);
+                return RtlInterlockedSetBits(vFlags, aFlags);
             }
+
+            return 0;
         }
         
 
@@ -560,14 +563,98 @@ namespace wdk
 
             if (vFlags)
             {
-                RtlInterlockedClearBitsDiscardReturn(vFlags, aFlags);
+                return RtlInterlockedClearBits(vFlags, aFlags);
+            }
+
+            return 0;
+        }
+
+
+        inline auto PsSetProcessExitTime(PEPROCESS aProcess)
+            -> VOID
+        {
+            auto vExitTime = (PLARGE_INTEGER)(nullptr);
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vExitTime = &reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vExitTime = &reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vExitTime = &reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vExitTime = &reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vExitTime = &reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vExitTime = &reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vExitTime = &reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vExitTime = &reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vExitTime = &reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vExitTime = &reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vExitTime = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            }
+
+            if (vExitTime)
+            {
+                KeQuerySystemTime(vExitTime);
             }
         }
 
 
+        __declspec(selectany) PVOID PsSystemDllBase = nullptr;
+
+
         inline auto PsInitSystem() -> NTSTATUS
         {
-            return STATUS_SUCCESS;
+            auto vStatus = STATUS_SUCCESS;
+
+            for (;;)
+            {
+                auto vPeb = (PPEB)NtCurrentTeb()->ProcessEnvironmentBlock;
+                auto vLdr = (PPEB_LDR_DATA)vPeb->Ldr;
+                auto vLdrHead = (PLIST_ENTRY)&vLdr->InLoadOrderModuleList;
+
+                for (auto vLdrNext = vLdrHead->Flink; vLdrNext != vLdrHead; vLdrNext = vLdrNext->Flink)
+                {
+                    auto vLdrEntry = CONTAINING_RECORD(vLdrNext, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
+                    auto vDllName  = (PUNICODE_STRING)&vLdrEntry->BaseDllName;
+                                        
+                    if (wcsncmp(vDllName->Buffer, L"ntdll.dll", vDllName->Length / sizeof(wchar_t)) == 0)
+                    {
+                        PsSystemDllBase = vLdrEntry->DllBase;
+                        break;
+                    }
+                }
+                if (nullptr == PsSystemDllBase)
+                {
+                    vStatus = STATUS_NOT_FOUND;
+                    break;
+                }
+
+                break;
+            }
+
+            return vStatus;
         }
     }
 }

@@ -7,10 +7,12 @@
 namespace wdk
 {
 
-    constexpr auto WOW64_SYSTEM_DIRECTORY   = "SysWOW64";
-    constexpr auto WOW64_SYSTEM_DIRECTORY_U = L"SysWOW64";
-    constexpr auto WOW64_X86_TAG            = " (x86)";
-    constexpr auto WOW64_X86_TAG_U          = L" (x86)";
+    constexpr char      WOW64_SYSTEM_DIRECTORY[]    = "SysWOW64";
+    constexpr wchar_t   WOW64_SYSTEM_DIRECTORY_U[]  = L"SysWOW64";
+    constexpr char      WOW64_X86_TAG[]             = " (x86)";
+    constexpr wchar_t   WOW64_X86_TAG_U[]           = L" (x86)";
+
+    constexpr UNICODE_STRING PsNtDllPathName        = RTL_CONSTANT_STRING(L"\\SystemRoot\\System32\\ntdll.dll");
     
 
 #pragma region AccessMask

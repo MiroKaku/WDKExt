@@ -126,6 +126,16 @@ namespace wdk
     extern"C"
     {
 
+        inline auto NtCurrentTeb(VOID)
+            -> struct _TEB*
+        {
+#ifdef _WIN64
+            return (struct _TEB *)__readgsqword(offsetof(NT_TIB, Self));
+#else
+            return (struct _TEB *)__readfsdword(offsetof(NT_TIB, Self));
+#endif
+        }
+
         inline auto PsGetThreadRundownProtect(PETHREAD aThread) 
             -> PEX_RUNDOWN_REF
         {
