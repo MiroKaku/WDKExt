@@ -119,6 +119,18 @@ namespace wdk
 
     typedef struct _OBJECT_TYPE_INITIALIZER
     {
+        enum : UINT16
+        {
+            SizeOfInitializerWin7X64    = 0x70,
+            SizeOfInitializerX64        = 0x78,
+
+            SizeOfInitializerWin7X86    = 0x50,
+            SizeOfInitializerX86        = 0x58,
+
+            SizeOfInitializerWin7       = (sizeof(SIZE_T) == sizeof(UINT64) ? SizeOfInitializerWin7X64 : SizeOfInitializerWin7X86),
+            SizeOfInitializer           = (sizeof(SIZE_T) == sizeof(UINT64) ? SizeOfInitializerX64 : SizeOfInitializerX86),
+        };
+
         UINT16 Length;
         union
         {

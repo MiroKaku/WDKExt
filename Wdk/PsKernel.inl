@@ -647,7 +647,7 @@ namespace wdk
 
                 KeStackAttachProcess((PKPROCESS)vProcess, &vApcState);
 
-                auto vPeb = (PPEB)NtCurrentTeb()->ProcessEnvironmentBlock;
+                auto vPeb = (PPEB)PsGetProcessPeb(vProcess);
                 auto vLdr = (PPEB_LDR_DATA)vPeb->Ldr;
                 auto vLdrHead = (PLIST_ENTRY)&vLdr->InLoadOrderModuleList;
 

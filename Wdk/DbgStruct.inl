@@ -12,8 +12,8 @@ namespace wdk
         DebugSetInformation     = 0x0004,
         DebugQueryInformation   = 0x0008,
 
-        DEBUG_ALL_ACCESS = StandardRightsRequired | Synchronize | 
-        DebugReadEvent | DebugProcessAssign | DebugSetInformation | DebugQueryInformation
+        DebugAllAccess = StandardRightsRequired | Synchronize | 
+            DebugReadEvent | DebugProcessAssign | DebugSetInformation | DebugQueryInformation
     };
 #pragma endregion
 
