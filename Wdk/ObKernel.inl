@@ -102,6 +102,18 @@ namespace wdk
             );
 
         NTSTATUS NTAPI
+            ObReferenceObjectByName(
+                _In_ PUNICODE_STRING ObjectName,
+                _In_ ULONG Attributes,
+                _In_opt_ PACCESS_STATE AccessState,
+                _In_opt_ ACCESS_MASK DesiredAccess,
+                _In_ POBJECT_TYPE ObjectType,
+                _In_ KPROCESSOR_MODE AccessMode,
+                _Inout_opt_ PVOID ParseContext,
+                _Out_ PVOID *Object
+            );
+
+        NTSTATUS NTAPI
             ObQueryNameString(
                 _In_ PVOID Object,
                 _Out_writes_bytes_opt_(Length) POBJECT_NAME_INFORMATION ObjectNameInfo,
@@ -251,9 +263,27 @@ namespace wdk
         }
 
 
+        __declspec(selectany) POBJECT_TYPE  _ObTypeObjectType   = nullptr;
+        __declspec(selectany) POBJECT_TYPE * ObTypeObjectType   = &_ObTypeObjectType;
+
+
         inline auto ObInitSystem() -> NTSTATUS
         {
-            return ObInitInfoBlockOffsets();
+            auto vStatus = STATUS_SUCCESS;
+
+            for (;;)
+            {
+                vStatus = ObInitInfoBlockOffsets();
+                if (!NT_SUCCESS(vStatus))
+                {
+                    break;
+                }
+
+                _ObTypeObjectType = ObGetObjectType(*PsProcessType);
+                break;
+            }
+
+            return vStatus;
         }
     }
 }
