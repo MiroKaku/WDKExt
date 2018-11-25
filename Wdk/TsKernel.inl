@@ -230,21 +230,43 @@ namespace wdk
 
             if (!IsWindows8OrGreater())
             {
-                if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->HardErrorsAreDisabled)
+                if (IsWindows7SP1OrGreater())
                 {
-                    vFlags |= PsCrossThreadFlagsHardErrorsAreDisabled;
+                    if (reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->HardErrorsAreDisabled)
+                    {
+                        vFlags |= PsCrossThreadFlagsHardErrorsAreDisabled;
+                    }
+                    if (reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->BreakOnTermination)
+                    {
+                        vFlags |= PsCrossThreadFlagsBreakOnTermination;
+                    }
+                    if (reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->SkipCreationMsg)
+                    {
+                        vFlags |= PsCrossThreadFlagsSkipCreationMsg;
+                    }
+                    if (reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->SkipTerminationMsg)
+                    {
+                        vFlags |= PsCrossThreadFlagsSkipTerminationMsg;
+                    }
                 }
-                if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->BreakOnTermination)
+                else
                 {
-                    vFlags |= PsCrossThreadFlagsBreakOnTermination;
-                }
-                if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipCreationMsg)
-                {
-                    vFlags |= PsCrossThreadFlagsSkipCreationMsg;
-                }
-                if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipTerminationMsg)
-                {
-                    vFlags |= PsCrossThreadFlagsSkipTerminationMsg;
+                    if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->HardErrorsAreDisabled)
+                    {
+                        vFlags |= PsCrossThreadFlagsHardErrorsAreDisabled;
+                    }
+                    if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->BreakOnTermination)
+                    {
+                        vFlags |= PsCrossThreadFlagsBreakOnTermination;
+                    }
+                    if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipCreationMsg)
+                    {
+                        vFlags |= PsCrossThreadFlagsSkipCreationMsg;
+                    }
+                    if (reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipTerminationMsg)
+                    {
+                        vFlags |= PsCrossThreadFlagsSkipTerminationMsg;
+                    }
                 }
             }
 
@@ -370,6 +392,54 @@ namespace wdk
             }
 
             return vStartAddress;
+        }
+
+
+        inline auto PsGetThreadExitStatus(PETHREAD aThread)
+            -> NTSTATUS
+        {
+            auto vExitStatus = NTSTATUS();
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vExitStatus = reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vExitStatus = reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vExitStatus = reinterpret_cast<wdk::build_9200::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vExitStatus = reinterpret_cast<wdk::build_9600::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vExitStatus = reinterpret_cast<wdk::build_10240::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vExitStatus = reinterpret_cast<wdk::build_10586::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vExitStatus = reinterpret_cast<wdk::build_14393::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vExitStatus = reinterpret_cast<wdk::build_15063::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vExitStatus = reinterpret_cast<wdk::build_16299::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vExitStatus = reinterpret_cast<wdk::build_17134::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vExitStatus = reinterpret_cast<wdk::build_17763::PETHREAD>(aThread)->ExitStatus;
+                break;
+            }
+
+            return vExitStatus;
         }
 
 

@@ -25,9 +25,9 @@ using ULONG     = unsigned  long;
 using ULONGLONG = UINT64;
 using ULONG64   = UINT64;
 
-using BYTE      = UINT8;
-using WORD      = UINT16;
-using DWORD     = UINT32;
+using BYTE      = UCHAR;
+using WORD      = USHORT;
+using DWORD     = ULONG;
 using QWORD     = UINT64;
 
 using PVOID32   = void * __ptr32;

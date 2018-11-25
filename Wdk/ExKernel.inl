@@ -85,6 +85,37 @@ namespace wdk
                 _Inout_ PEX_PUSH_LOCK aPushLock
             );
 
+        // since win8.1
+        VOID FASTCALL
+            ExAcquirePushLockExclusiveEx(
+                _Inout_ _Requires_lock_not_held_(*_Curr_) _Acquires_lock_(*_Curr_)
+                PEX_PUSH_LOCK PushLock,
+                _In_ ULONG Flags
+            );
+
+        // since win8.1
+        VOID FASTCALL
+            ExAcquirePushLockSharedEx(
+                _Inout_ _Requires_lock_not_held_(*_Curr_) _Acquires_lock_(*_Curr_)
+                PEX_PUSH_LOCK PushLock,
+                _In_ ULONG Flags
+            );
+
+        // since win8.1
+        VOID FASTCALL
+            ExReleasePushLockExclusiveEx(
+                _Inout_ _Requires_lock_held_(*_Curr_) _Releases_lock_(*_Curr_)
+                PEX_PUSH_LOCK PushLock,
+                _In_ ULONG Flags
+            );
+
+        // since win8.1
+        VOID FASTCALL
+            ExReleasePushLockSharedEx(
+                _Inout_ _Requires_lock_held_(*_Curr_) _Releases_lock_(*_Curr_)
+                PEX_PUSH_LOCK PushLock,
+                _In_ ULONG Flags
+            );
     }
 }
 
@@ -120,6 +151,7 @@ namespace wdk
             }
         }
 
+#ifndef ExAcquirePushLockExclusive
         FORCEINLINE VOID ExAcquirePushLockExclusive(
             PEX_PUSH_LOCK aPushLock)
         {
@@ -132,18 +164,21 @@ namespace wdk
                 ExfAcquirePushLockExclusive(aPushLock);
             }
         }
+#endif
 
+#ifndef ExAcquirePushLockShared
         FORCEINLINE VOID ExAcquirePushLockShared(
             PEX_PUSH_LOCK aPushLock)
         {
             if (InterlockedCompareExchangePointer(
                 &(reinterpret_cast<PEX_PUSH_LOCK_IMPL>(aPushLock)->Ptr),
                 (PVOID)(EX_PUSH_LOCK_IMPL::LockFlagsShareInc | EX_PUSH_LOCK_IMPL::LockFlagsLock),
-                0) != 0)
+                nullptr) != nullptr)
             {
                 ExfAcquirePushLockShared(aPushLock);
             }
         }
+#endif
 
         FORCEINLINE BOOLEAN ExTryAcquirePushLockExclusive(
             PEX_PUSH_LOCK aPushLock)
@@ -170,7 +205,7 @@ namespace wdk
             if (InterlockedCompareExchangePointer(
                 &reinterpret_cast<PEX_PUSH_LOCK_IMPL>(aPushLock)->Ptr,
                 (PVOID)(EX_PUSH_LOCK_IMPL::LockFlagsShareInc | EX_PUSH_LOCK_IMPL::LockFlagsLock),
-                0) != 0)
+                nullptr) != nullptr)
             {
                 return ExfTryAcquirePushLockShared(aPushLock);
             }
@@ -178,6 +213,7 @@ namespace wdk
             return TRUE;
         }
 
+#ifndef ExReleasePushLockExclusive
         VOID FORCEINLINE ExReleasePushLockExclusive(
             PEX_PUSH_LOCK aPushLock)
         {
@@ -196,7 +232,9 @@ namespace wdk
 
             ExfTryToWakePushLock(aPushLock);
         }
+#endif
 
+#ifndef ExReleasePushLockShared
         VOID FORCEINLINE ExReleasePushLockShared(
             PEX_PUSH_LOCK aPushLock)
         {
@@ -212,6 +250,7 @@ namespace wdk
                 ExfReleasePushLockShared(aPushLock);
             }
         }
+#endif
 
 
         inline auto ExInitSystem() -> NTSTATUS

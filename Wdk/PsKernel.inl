@@ -621,6 +621,156 @@ namespace wdk
         }
 
 
+        inline auto PsGetProcessActiveThreads(PEPROCESS aProcess)
+            -> INT32
+        {
+            auto vActiveThreads = INT32();
+            
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vActiveThreads = reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vActiveThreads = reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vActiveThreads = reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vActiveThreads = reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vActiveThreads = reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vActiveThreads = reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vActiveThreads = reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vActiveThreads = reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vActiveThreads = reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vActiveThreads = reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vActiveThreads = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            }
+
+            return vActiveThreads;
+        }
+
+
+        inline auto PsGetProcessLastThreadExitStatus(PEPROCESS aProcess)
+            -> NTSTATUS
+        {
+            auto vExitStatus = NTSTATUS();
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vExitStatus = reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vExitStatus = reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vExitStatus = reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vExitStatus = reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vExitStatus = reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vExitStatus = reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vExitStatus = reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vExitStatus = reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vExitStatus = reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vExitStatus = reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vExitStatus = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            }
+
+            return vExitStatus;
+        }
+
+
+        inline auto PsSetProcessDebugPort(PEPROCESS aProcess, PVOID aDebugPort)
+            -> NTSTATUS
+        {
+            void** vDebugPort = nullptr;
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vDebugPort = &reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vDebugPort = &reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vDebugPort = &reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vDebugPort = &reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vDebugPort = &reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vDebugPort = &reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vDebugPort = &reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vDebugPort = &reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vDebugPort = &reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vDebugPort = &reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vDebugPort = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            }
+
+            if (vDebugPort)
+            {
+                InterlockedExchangePointer(vDebugPort, aDebugPort);
+                return STATUS_SUCCESS;
+            }
+
+            return STATUS_NOT_SUPPORTED;
+        }
+
+
         __declspec(selectany) PVOID PsSystemDllBase = nullptr;
 
 
