@@ -106,7 +106,7 @@ namespace wdk::build_17763
         union
         {
             VOID* ExceptionPortData;
-            SIZE_T ExceptionPortValue;
+            SIZE_T ExceptionPortValue : sizeof(SIZE_T) * 8 - 3;
             SIZE_T ExceptionPortState : 3; /* bit position: 0 */
         };
         struct _EX_FAST_REF Token;

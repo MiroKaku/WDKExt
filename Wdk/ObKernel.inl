@@ -11,81 +11,81 @@ namespace wdk
 
         NTSTATUS NTAPI
             ObCreateObjectType(
-                __in PUNICODE_STRING            aTypeName,
-                __in POBJECT_TYPE_INITIALIZER   aObjectTypeInitializer,
-                __in_opt PSECURITY_DESCRIPTOR   aSecurityDescriptor,
-                __out POBJECT_TYPE *            aObjectType
+                _In_ PUNICODE_STRING            aTypeName,
+                _In_ POBJECT_TYPE_INITIALIZER   aObjectTypeInitializer,
+                _In_opt_ PSECURITY_DESCRIPTOR   aSecurityDescriptor,
+                _Out_ POBJECT_TYPE *            aObjectType
             );
 
         NTSTATUS NTAPI
             ObCreateObject(
-                __in KPROCESSOR_MODE ProbeMode,
-                __in POBJECT_TYPE    ObjectType,
-                __in POBJECT_ATTRIBUTES ObjectAttributes,
-                __in KPROCESSOR_MODE OwnershipMode,
-                __inout_opt  PVOID   ParseContext,
-                __in ULONG           ObjectBodySize,
-                __in ULONG           PagedPoolCharge,
-                __in ULONG           NonPagedPoolCharge,
-                __out PVOID *        Object
+                _In_ KPROCESSOR_MODE ProbeMode,
+                _In_ POBJECT_TYPE    ObjectType,
+                _In_ POBJECT_ATTRIBUTES ObjectAttributes,
+                _In_ KPROCESSOR_MODE OwnershipMode,
+                _Inout_opt_  PVOID   ParseContext,
+                _In_ ULONG           ObjectBodySize,
+                _In_ ULONG           PagedPoolCharge,
+                _In_ ULONG           NonPagedPoolCharge,
+                _Out_ PVOID *        Object
             );
 
         NTSTATUS NTAPI
             ObInsertObject(
-                __in PVOID              Object,
-                __in_opt PACCESS_STATE  PassedAccessState,
-                __in_opt ACCESS_MASK    DesiredAccess,
-                __in ULONG              ObjectPointerBias,
-                __out_opt PVOID *       NewObject,
-                __out_opt PHANDLE       Handle
+                _In_ PVOID              Object,
+                _In_opt_ PACCESS_STATE  PassedAccessState,
+                _In_opt_ ACCESS_MASK    DesiredAccess,
+                _In_ ULONG              ObjectPointerBias,
+                _Out_opt_ PVOID *       NewObject,
+                _Out_opt_ PHANDLE       Handle
             );
 
         NTSTATUS NTAPI
             ObOpenObjectByName(
-                __in POBJECT_ATTRIBUTES ObjectAttributes,
-                __in_opt POBJECT_TYPE ObjectType,
-                __in KPROCESSOR_MODE AccessMode,
-                __inout_opt PACCESS_STATE AccessState,
-                __in_opt ACCESS_MASK DesiredAccess,
-                __inout_opt PVOID ParseContext,
-                __out PHANDLE Handle
+                _In_ POBJECT_ATTRIBUTES ObjectAttributes,
+                _In_opt_ POBJECT_TYPE ObjectType,
+                _In_ KPROCESSOR_MODE AccessMode,
+                _Inout_opt_ PACCESS_STATE AccessState,
+                _In_opt_ ACCESS_MASK DesiredAccess,
+                _Inout_opt_ PVOID ParseContext,
+                _Out_ PHANDLE Handle
             );
 
         NTSTATUS NTAPI
             ObOpenObjectByPointer(
-                __in PVOID              aObject,
-                __in ULONG              aHandleAttributes,
-                __in_opt PACCESS_STATE  aPassedAccessState,
-                __in ACCESS_MASK        aDesiredAccess,
-                __in_opt POBJECT_TYPE   aObjectType,
-                __in KPROCESSOR_MODE    aAccessMode,
-                __out PHANDLE           aHandle
+                _In_ PVOID              aObject,
+                _In_ ULONG              aHandleAttributes,
+                _In_opt_ PACCESS_STATE  aPassedAccessState,
+                _In_ ACCESS_MASK        aDesiredAccess,
+                _In_opt_ POBJECT_TYPE   aObjectType,
+                _In_ KPROCESSOR_MODE    aAccessMode,
+                _Out_ PHANDLE           aHandle
             );
 
         NTSTATUS NTAPI
             ObOpenObjectByPointerWithTag(
-                __in PVOID              aObject,
-                __in ULONG              aHandleAttributes,
-                __in_opt PACCESS_STATE  aPassedAccessState,
-                __in ACCESS_MASK        aDesiredAccess,
-                __in_opt POBJECT_TYPE   aObjectType,
-                __in KPROCESSOR_MODE    aAccessMode,
-                __in ULONG              aTag,
-                __out PHANDLE           aHandle
+                _In_ PVOID              aObject,
+                _In_ ULONG              aHandleAttributes,
+                _In_opt_ PACCESS_STATE  aPassedAccessState,
+                _In_ ACCESS_MASK        aDesiredAccess,
+                _In_opt_ POBJECT_TYPE   aObjectType,
+                _In_ KPROCESSOR_MODE    aAccessMode,
+                _In_ ULONG              aTag,
+                _Out_ PHANDLE           aHandle
             );
 
         VOID NTAPI
             ObMakeTemporaryObject(
-                __in PVOID Object
+                _In_ PVOID Object
             );
 
         BOOLEAN NTAPI
             ObFindHandleForObject(
-                __in PEPROCESS Process,
-                __in PVOID Object,
-                __in_opt POBJECT_TYPE ObjectType,
-                __in_opt POBJECT_HANDLE_INFORMATION MatchCriteria,
-                __out PHANDLE Handle
+                _In_ PEPROCESS Process,
+                _In_ PVOID Object,
+                _In_opt_ POBJECT_TYPE ObjectType,
+                _In_opt_ POBJECT_HANDLE_INFORMATION MatchCriteria,
+                _Out_ PHANDLE Handle
             );
 
         // begin win8

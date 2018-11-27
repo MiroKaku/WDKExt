@@ -20,47 +20,47 @@ namespace wdk
             PsIsThreadTerminating(
                 _In_ PETHREAD Thread
             );
-        
+
         NTSTATUS NTAPI
             PsGetContextThread(
-                __in PETHREAD Thread,
-                __inout PCONTEXT ThreadContext,
-                __in KPROCESSOR_MODE Mode
+                _In_ PETHREAD Thread,
+                _Inout_ PCONTEXT ThreadContext,
+                _In_ KPROCESSOR_MODE Mode
             );
 
         NTSTATUS NTAPI
             PsSetContextThread(
-                __in PETHREAD Thread,
-                __in PCONTEXT ThreadContext,
-                __in KPROCESSOR_MODE Mode
+                _In_ PETHREAD Thread,
+                _In_ PCONTEXT ThreadContext,
+                _In_ KPROCESSOR_MODE Mode
             );
-        
+
         VOID NTAPI
             PsSetThreadHardErrorsAreDisabled(
-                __in PETHREAD Thread,
-                __in BOOLEAN HardErrorsAreDisabled
+                _In_ PETHREAD Thread,
+                _In_ BOOLEAN HardErrorsAreDisabled
             );
 
         VOID NTAPI
             PsSetThreadWin32Thread(
-                __inout PETHREAD Thread,
-                __in PVOID Win32Thread,
-                __in PVOID PrevWin32Thread
+                _Inout_ PETHREAD Thread,
+                _In_ PVOID Win32Thread,
+                _In_ PVOID PrevWin32Thread
             );
 
         CCHAR NTAPI
             PsGetThreadFreezeCount(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
         BOOLEAN NTAPI
             PsGetThreadHardErrorsAreDisabled(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
         PEPROCESS NTAPI
             PsGetThreadProcess(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
         PEPROCESS NTAPI
@@ -72,8 +72,8 @@ namespace wdk
             PsGetCurrentThreadProcessId(
                 VOID
             );
-        
-        inline CLIENT_ID NTAPI 
+
+        inline CLIENT_ID NTAPI
             PsGetThreadClientId(PETHREAD Thread)
         {
             return { PsGetThreadProcessId(Thread), PsGetThreadId(Thread) };
@@ -81,19 +81,19 @@ namespace wdk
 
         ULONG NTAPI
             PsGetThreadSessionId(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
 #define  PsGetThreadTcb(Thread) ((PKTHREAD)(Thread))
 
         PVOID NTAPI
             PsGetThreadTeb(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
         PVOID NTAPI
             PsGetThreadWin32Thread(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
         PVOID NTAPI
@@ -108,12 +108,12 @@ namespace wdk
 
         BOOLEAN NTAPI
             PsIsSystemThread(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
         BOOLEAN NTAPI
             PsIsThreadImpersonating(
-                __in PETHREAD Thread
+                _In_ PETHREAD Thread
             );
 
 
@@ -136,7 +136,7 @@ namespace wdk
 #endif
         }
 
-        inline auto PsGetThreadRundownProtect(PETHREAD aThread) 
+        inline auto PsGetThreadRundownProtect(PETHREAD aThread)
             -> PEX_RUNDOWN_REF
         {
             auto vRundownProtect = PEX_RUNDOWN_REF();
@@ -326,22 +326,54 @@ namespace wdk
                 }
                 else
                 {
-                    if (aFlags & PsCrossThreadFlagsHardErrorsAreDisabled)
+                    if (IsWindows7SP1OrGreater())
                     {
-                        reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->HardErrorsAreDisabled = true;
+                        if (aFlags & PsCrossThreadFlagsHardErrorsAreDisabled)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsHardErrorsAreDisabled;
+                            reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->HardErrorsAreDisabled = true;
+                        }
+                        if (aFlags & PsCrossThreadFlagsBreakOnTermination)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsBreakOnTermination;
+                            reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->BreakOnTermination = true;
+                        }
+                        if (aFlags & PsCrossThreadFlagsSkipCreationMsg)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsSkipCreationMsg;
+                            reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->SkipCreationMsg = true;
+                        }
+                        if (aFlags & PsCrossThreadFlagsSkipTerminationMsg)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsSkipTerminationMsg;
+                            reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->SkipTerminationMsg = true;
+                        }
                     }
-                    if (aFlags & PsCrossThreadFlagsBreakOnTermination)
+                    else
                     {
-                        reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->BreakOnTermination = true;
+                        if (aFlags & PsCrossThreadFlagsHardErrorsAreDisabled)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsHardErrorsAreDisabled;
+                            reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->HardErrorsAreDisabled = true;
+                        }
+                        if (aFlags & PsCrossThreadFlagsBreakOnTermination)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsBreakOnTermination;
+                            reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->BreakOnTermination = true;
+                        }
+                        if (aFlags & PsCrossThreadFlagsSkipCreationMsg)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsSkipCreationMsg;
+                            reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipCreationMsg = true;
+                        }
+                        if (aFlags & PsCrossThreadFlagsSkipTerminationMsg)
+                        {
+                            aFlags &= ~PsCrossThreadFlagsSkipTerminationMsg;
+                            reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipTerminationMsg = true;
+                        }
                     }
-                    if (aFlags & PsCrossThreadFlagsSkipCreationMsg)
-                    {
-                        reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipCreationMsg = true;
-                    }
-                    if (aFlags & PsCrossThreadFlagsSkipTerminationMsg)
-                    {
-                        reinterpret_cast<wdk::build_7600::PETHREAD>(aThread)->SkipTerminationMsg = true;
-                    }
+
+                    RtlInterlockedSetBitsDiscardReturn(vFlags, aFlags);
                 }
             }
         }

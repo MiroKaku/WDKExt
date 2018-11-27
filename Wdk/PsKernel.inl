@@ -771,6 +771,54 @@ namespace wdk
         }
 
 
+        inline auto PsGetProcessExceptionPort(PEPROCESS aProcess)
+            ->PVOID
+        {
+            auto vPort = SIZE_T();
+
+            switch (GetSystemVersion())
+            {
+            default:
+                break;
+            case wdk::SystemVersion::Windows7:
+                vPort = reinterpret_cast<wdk::build_7600::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows7_SP1:
+                vPort = reinterpret_cast<wdk::build_7601::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows8:
+                vPort = reinterpret_cast<wdk::build_9200::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows8_1:
+                vPort = reinterpret_cast<wdk::build_9600::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1507:
+                vPort = reinterpret_cast<wdk::build_10240::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1511:
+                vPort = reinterpret_cast<wdk::build_10586::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1607:
+                vPort = reinterpret_cast<wdk::build_14393::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1703:
+                vPort = reinterpret_cast<wdk::build_15063::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1709:
+                vPort = reinterpret_cast<wdk::build_16299::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1803:
+                vPort = reinterpret_cast<wdk::build_17134::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1809:
+                vPort = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            }
+
+            return (PVOID)vPort;
+        }
+
+
         __declspec(selectany) PVOID PsSystemDllBase = nullptr;
 
 

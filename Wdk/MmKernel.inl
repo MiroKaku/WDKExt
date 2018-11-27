@@ -410,7 +410,7 @@ namespace wdk
         inline auto MiPpeToAddress(__in PHARDWARE_PTE /*aPointerPpe*/)
             -> void*
         {
-            return 0;
+            return nullptr;
         }
 
 
