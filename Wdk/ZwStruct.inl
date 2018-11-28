@@ -2527,7 +2527,7 @@ namespace wdk
     {
         MemoryBasicInformation, // MEMORY_BASIC_INFORMATION
         MemoryWorkingSetInformation, // MEMORY_WORKING_SET_INFORMATION
-        MemoryMappedFilenameInformation, // UNICODE_STRING
+        MemoryMappedFilenameInformation, // MEMORY_MAPPED_FILE_NAME_INFORMATION
         MemoryRegionInformation, // MEMORY_REGION_INFORMATION
         MemoryWorkingSetExInformation, // MEMORY_WORKING_SET_EX_INFORMATION
         MemorySharedCommitInformation, // MEMORY_SHARED_COMMIT_INFORMATION
@@ -2556,6 +2556,14 @@ namespace wdk
         ULONG_PTR NumberOfEntries;
         MEMORY_WORKING_SET_BLOCK WorkingSetInfo[1];
     } MEMORY_WORKING_SET_INFORMATION, *PMEMORY_WORKING_SET_INFORMATION;
+    
+    typedef struct _MEMORY_MAPPED_FILE_NAME_INFORMATION
+    {
+        enum : UINT32 { MaxObjectName = 512 / sizeof(WCHAR) };
+
+        UNICODE_STRING  Name;
+        WCHAR           Buffer[MaxObjectName];
+    } MEMORY_MAPPED_FILE_NAME_INFORMATION, *PMEMORY_MAPPED_FILE_NAME_INFORMATION;
 
     // private
     typedef struct _MEMORY_REGION_INFORMATION
