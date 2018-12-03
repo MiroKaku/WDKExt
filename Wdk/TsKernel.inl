@@ -230,6 +230,8 @@ namespace wdk
 
             if (!IsWindows8OrGreater())
             {
+                vFlags &= 0xF;
+
                 if (IsWindows7SP1OrGreater())
                 {
                     if (reinterpret_cast<wdk::build_7601::PETHREAD>(aThread)->HardErrorsAreDisabled)
