@@ -72,7 +72,7 @@ namespace wdk
 
     using PKKERNEL_ROUTINE = void (NTAPI*)(
         _In_ PRKAPC Apc,
-        _Inout_ PKNORMAL_ROUTINE NormalRoutine,
+        _Inout_ PKNORMAL_ROUTINE* NormalRoutine,
         _Inout_ PVOID *NormalContext,
         _Inout_ PVOID *SystemArgument1,
         _Inout_ PVOID *SystemArgument2);

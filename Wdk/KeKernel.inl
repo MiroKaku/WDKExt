@@ -7,8 +7,7 @@ namespace wdk
 
     extern"C"
     {
-
-
+        
         BOOLEAN NTAPI
             KeAddSystemServiceTable(
                 _In_ PULONG_PTR aBase,
@@ -56,6 +55,34 @@ namespace wdk
                 _In_opt_ PVOID aSystemArgument1,
                 _In_opt_ PVOID aSystemArgument2,
                 _In_ KPRIORITY aIncrement
+            );
+
+
+        BOOLEAN NTAPI
+            KeRemoveQueueApc(
+                _Inout_ PKAPC Apc
+            );
+
+
+        BOOLEAN NTAPI
+            KeTestAlertThread(
+                _In_ KPROCESSOR_MODE AlertMode
+            );
+
+        VOID NTAPI
+            KeGenericCallDpc(
+                _In_ PKDEFERRED_ROUTINE Routine,
+                _In_opt_ PVOID Context
+            );
+
+        VOID NTAPI
+            KeSignalCallDpcDone(
+                _In_ PVOID SystemArgument1
+            );
+
+        LOGICAL NTAPI
+            KeSignalCallDpcSynchronize(
+                _In_ PVOID SystemArgument2
             );
 
     }
