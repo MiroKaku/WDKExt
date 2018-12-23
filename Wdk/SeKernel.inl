@@ -1,4 +1,5 @@
 #pragma once
+#include "SeMacro.inl"
 #include "SeStruct.inl"
 
 

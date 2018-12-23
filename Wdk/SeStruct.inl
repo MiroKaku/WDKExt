@@ -272,6 +272,8 @@ namespace wdk
         InheritOnlyAce          = 0x8,
         InheritedAce            = 0x10,
         ValidInheritFlags       = 0x1f,
+        CriticalAce             = 0x20,
+        TrustProtectedFilterAce = 0x40,
 
         SuccessfulAccessAceFlag = 0x40,
         FailedAccessAceFlag     = 0x80,
