@@ -472,3 +472,5 @@ namespace wdk
         }
     }
 }
+
+using wdk::PAGE_SIZE;

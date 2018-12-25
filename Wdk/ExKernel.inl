@@ -6,7 +6,8 @@ namespace wdk
 {
     extern"C"
     {
-        POBJECT_TYPE* ExWindowStationObjectType;
+
+        __declspec(selectany) POBJECT_TYPE* ExWindowStationObjectType;
         
 
         int NTAPI

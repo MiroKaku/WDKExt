@@ -58,10 +58,10 @@ namespace wdk
             );
 
 
-        BOOLEAN NTAPI
-            KeRemoveQueueApc(
-                _Inout_ PKAPC Apc
-            );
+        //BOOLEAN NTAPI
+        //    KeRemoveQueueApc(
+        //        _Inout_ PKAPC Apc
+        //    );
 
 
         BOOLEAN NTAPI
