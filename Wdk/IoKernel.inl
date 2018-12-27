@@ -6,8 +6,8 @@ namespace wdk
 {
     extern"C"
     {
-        __declspec(selectany) POBJECT_TYPE *IoAdapterObjectType;
-        __declspec(selectany) POBJECT_TYPE *IoDriverObjectType;
+        extern POBJECT_TYPE *IoAdapterObjectType;
+        extern POBJECT_TYPE *IoDriverObjectType;
 
         NTSTATUS NTAPI
             IoQueryFileDosDeviceName(
