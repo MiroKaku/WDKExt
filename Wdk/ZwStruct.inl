@@ -2519,6 +2519,59 @@ namespace wdk
         ObjectSessionObjectInformation,
         MaxObjectInfoClass
     } OBJECT_INFORMATION_CLASS;
+
+    typedef struct _OBJECT_BASIC_INFORMATION
+    {
+        ULONG Attributes;
+        ACCESS_MASK GrantedAccess;
+        ULONG HandleCount;
+        ULONG PointerCount;
+        ULONG PagedPoolCharge;
+        ULONG NonPagedPoolCharge;
+        ULONG Reserved[3];
+        ULONG NameInfoSize;
+        ULONG TypeInfoSize;
+        ULONG SecurityDescriptorSize;
+        LARGE_INTEGER CreationTime;
+    } OBJECT_BASIC_INFORMATION, *POBJECT_BASIC_INFORMATION;
+
+    typedef struct _OBJECT_TYPE_INFORMATION
+    {
+        UNICODE_STRING TypeName;
+        ULONG TotalNumberOfObjects;
+        ULONG TotalNumberOfHandles;
+        ULONG TotalPagedPoolUsage;
+        ULONG TotalNonPagedPoolUsage;
+        ULONG TotalNamePoolUsage;
+        ULONG TotalHandleTableUsage;
+        ULONG HighWaterNumberOfObjects;
+        ULONG HighWaterNumberOfHandles;
+        ULONG HighWaterPagedPoolUsage;
+        ULONG HighWaterNonPagedPoolUsage;
+        ULONG HighWaterNamePoolUsage;
+        ULONG HighWaterHandleTableUsage;
+        ULONG InvalidAttributes;
+        GENERIC_MAPPING GenericMapping;
+        ULONG ValidAccessMask;
+        BOOLEAN SecurityRequired;
+        BOOLEAN MaintainHandleCount;
+        UCHAR TypeIndex; // since WINBLUE
+        CHAR ReservedByte;
+        ULONG PoolType;
+        ULONG DefaultPagedPoolCharge;
+        ULONG DefaultNonPagedPoolCharge;
+    } OBJECT_TYPE_INFORMATION, *POBJECT_TYPE_INFORMATION;
+
+    typedef struct _OBJECT_TYPES_INFORMATION
+    {
+        ULONG NumberOfTypes;
+    } OBJECT_TYPES_INFORMATION, *POBJECT_TYPES_INFORMATION;
+
+    typedef struct _OBJECT_HANDLE_FLAG_INFORMATION
+    {
+        BOOLEAN Inherit;
+        BOOLEAN ProtectFromClose;
+    } OBJECT_HANDLE_FLAG_INFORMATION, *POBJECT_HANDLE_FLAG_INFORMATION;
 #pragma endregion
 
 
@@ -2793,6 +2846,34 @@ namespace wdk
     };
 #pragma endregion
 
+#pragma region File
+    typedef struct _FILE_LINK_INFORMATION {
+        BOOLEAN ReplaceIfExists;// FileLinkInformation
+        HANDLE  RootDirectory;
+        ULONG   FileNameLength;
+        WCHAR   FileName[1];
+    } FILE_LINK_INFORMATION, *PFILE_LINK_INFORMATION;
 
+    typedef struct _FILE_LINK_INFORMATION_EX {
+        ULONG   Flags;          // FileLinkInformationEx
+        HANDLE  RootDirectory;
+        ULONG   FileNameLength;
+        WCHAR   FileName[1];
+    } FILE_LINK_INFORMATION_EX, *PFILE_LINK_INFORMATION_EX;
+
+    typedef struct _FILE_RENAME_INFORMATION {
+        BOOLEAN ReplaceIfExists;// FileRenameInformation
+        HANDLE  RootDirectory;
+        ULONG   FileNameLength;
+        WCHAR   FileName[1];
+    } FILE_RENAME_INFORMATION, *PFILE_RENAME_INFORMATION;
+
+    typedef struct _FILE_RENAME_INFORMATION_EX {
+        ULONG   Flags;          // FileRenameInformationEx
+        HANDLE  RootDirectory;
+        ULONG   FileNameLength;
+        WCHAR   FileName[1];
+    } FILE_RENAME_INFORMATION_EX, *PFILE_RENAME_INFORMATION_EX;
+#pragma endregion
 
 }

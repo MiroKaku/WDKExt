@@ -25,6 +25,16 @@ namespace wdk
             IoDeleteDriver(
                 _In_ PDRIVER_OBJECT DriverObject
             );
+
+        PDEVICE_OBJECT NTAPI
+            IoGetBaseFileSystemDeviceObject(
+                _In_ PFILE_OBJECT FileObject
+            );
+
+        PDEVICE_OBJECT NTAPI
+            IoGetDeviceAttachmentBaseRef(
+                _In_ PDEVICE_OBJECT DeviceObject
+            );
     }
 }
 

@@ -154,6 +154,16 @@ namespace wdk
 {
     extern"C"
     {
+        inline auto ObMakeKernelHandle(HANDLE aHandle) -> HANDLE
+        {
+#ifdef _X86_
+#define KERNEL_HANDLE_BIT (0x80000000)
+#else
+#define KERNEL_HANDLE_BIT (0xffffffff80000000)
+#endif
+
+            return ((HANDLE)((ULONG_PTR)(aHandle) | KERNEL_HANDLE_BIT));
+        }
 
         __declspec(selectany) UINT8 ObInfoMaskToOffset[UINT8(~UINT8(0u)) + 1u]{};
         inline auto ObInitInfoBlockOffsets() -> NTSTATUS
