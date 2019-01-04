@@ -2874,6 +2874,42 @@ namespace wdk
         ULONG   FileNameLength;
         WCHAR   FileName[1];
     } FILE_RENAME_INFORMATION_EX, *PFILE_RENAME_INFORMATION_EX;
+    
+    typedef struct _FILE_ALLOCATION_INFORMATION {
+        LARGE_INTEGER AllocationSize;
+    } FILE_ALLOCATION_INFORMATION, *PFILE_ALLOCATION_INFORMATION;
+
+    typedef struct _FILE_FULL_DIR_INFORMATION {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        ULONG EaSize;
+        WCHAR FileName[1];
+    } FILE_FULL_DIR_INFORMATION, *PFILE_FULL_DIR_INFORMATION;
+
+    typedef struct _FILE_BOTH_DIR_INFORMATION {
+        ULONG NextEntryOffset;
+        ULONG FileIndex;
+        LARGE_INTEGER CreationTime;
+        LARGE_INTEGER LastAccessTime;
+        LARGE_INTEGER LastWriteTime;
+        LARGE_INTEGER ChangeTime;
+        LARGE_INTEGER EndOfFile;
+        LARGE_INTEGER AllocationSize;
+        ULONG FileAttributes;
+        ULONG FileNameLength;
+        ULONG EaSize;
+        CCHAR ShortNameLength;
+        WCHAR ShortName[12];
+        WCHAR FileName[1];
+    } FILE_BOTH_DIR_INFORMATION, *PFILE_BOTH_DIR_INFORMATION;
 #pragma endregion
 
 }
