@@ -831,7 +831,7 @@ namespace wdk
             {
                 for (auto vProcessId = 500; vProcessId < 20000; vProcessId += 4)
                 {
-                    PsLookupProcessByProcessId((HANDLE)vProcessId, &vProcess);
+                    wdk::PsLookupProcessByProcessId((HANDLE)vProcessId, &vProcess);
                     if (vProcess)
                     {
                         break;
