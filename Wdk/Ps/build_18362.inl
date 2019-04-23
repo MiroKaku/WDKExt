@@ -2,17 +2,108 @@
 
 
 /*
- * PDB file: \Nt-Crucial-Modules\Ntoskrnl\10.0.17134.376\
+ * PDB file: \Nt-Crucial-Modules\Ntoskrnl\10.0.8362.1\
  * Dumped by pdbex tool v0.4, by wbenny
  */
 
 
-namespace wdk::build_17134
+namespace wdk::build_18362
 {
 
-    using build_16299::NumberOfProcessor;
-    SameDefine$(build_16299, KAFFINITY_EX);
-    SameDefine$(build_16299, KPROCESS);
+
+    using build_17763::NumberOfProcessor;
+    SameDefine$(build_17763, KAFFINITY_EX);
+
+
+    typedef struct _KPROCESS
+    {
+        struct _DISPATCHER_HEADER Header;
+        struct _LIST_ENTRY ProfileListHead;
+        SIZE_T DirectoryTableBase;
+#ifdef _X86_
+        struct _KGDTENTRY LdtDescriptor;
+        struct _KIDTENTRY Int21Descriptor;
+#endif
+        struct _LIST_ENTRY ThreadListHead;
+        UINT32 ProcessLock;
+#ifdef _WIN64
+        UINT32 ProcessTimerDelay;
+#endif
+        UINT64 DeepFreezeStartTime;
+        struct _KAFFINITY_EX Affinity;
+        struct _LIST_ENTRY ReadyListHead;
+        struct _SINGLE_LIST_ENTRY SwapListEntry;
+        volatile struct _KAFFINITY_EX ActiveProcessors;
+        union
+        {
+            struct /* bitfield */
+            {
+                INT32 AutoAlignment : 1; /* bit position: 0 */
+                INT32 DisableBoost : 1; /* bit position: 1 */
+                INT32 DisableQuantum : 1; /* bit position: 2 */
+                UINT32 DeepFreeze : 1; /* bit position: 3 */
+                UINT32 TimerVirtualization : 1; /* bit position: 4 */
+                UINT32 CheckStackExtents : 1; /* bit position: 5 */
+                UINT32 CacheIsolationEnabled : 1; /* bit position: 6 */
+                UINT32 PpmPolicy : 3; /* bit position: 7 */
+                UINT32 VaSpaceDeleted : 1; /* bit position: 30/11 */
+                INT32 ReservedFlags : (sizeof(UINT32) * 8) - 11; /* bit position: 31/12 */
+            }; /* bitfield */
+            volatile INT32 ProcessFlags;
+        }; /* size: 0x0004 */
+#ifdef _WIN64
+        UINT32 ActiveGroupsMask;
+#endif
+        CHAR BasePriority;
+        CHAR QuantumReset;
+        BOOLEAN Visited;
+        union _KEXECUTE_OPTIONS Flags;
+        UINT16 ThreadSeed[NumberOfProcessor];
+        UINT16 IdealProcessor[NumberOfProcessor];
+        UINT16 IdealNode[NumberOfProcessor];
+        UINT16 IdealGlobalNode;
+        UINT16 Spare1;
+#ifdef _X86_
+        UINT16 IopmOffset;
+        struct _KSCHEDULING_GROUP* SchedulingGroup;
+#endif
+        volatile union _KSTACK_COUNT StackCount;
+        struct _LIST_ENTRY ProcessListEntry;
+        UINT64 CycleTime;
+        UINT64 ContextSwitches;
+#ifdef _WIN64
+        struct _KSCHEDULING_GROUP* SchedulingGroup;
+#endif
+        UINT32 FreezeCount;
+        UINT32 KernelTime;
+        UINT32 UserTime;
+        UINT32 ReadyTime;
+#ifdef _WIN64
+        UINT64 UserDirectoryTableBase;
+        UINT8 AddressPolicy;
+        UINT8 Spare2[71];
+        VOID* InstrumentationCallback;
+        union // _TAG_UNNAMED_86
+        {
+            union
+            {
+                UINT64 SecureHandle;
+                struct // _TAG_UNNAMED_87
+                {
+                    struct /* bitfield */
+                    {
+                        UINT64 SecureProcess : 1; /* bit position: 0 */
+                        UINT64 Unused : 1; /* bit position: 1 */
+                    }; /* bitfield */
+                } /* size: 0x0008 */ Flags;
+            }; /* size: 0x0008 */
+        } /* size: 0x0008 */ SecureState;
+#else
+        VOID* VdmTrapcHandler;
+        UINT32 ProcessTimerDelay;
+#endif
+    } KPROCESS, * PKPROCESS; /* size: 0x02e0 */ /* size: 0x00b0 */
+    static_assert(sizeof(KPROCESS) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x02e0 : 0x00b0));
 
 
     typedef struct _EPROCESS
@@ -128,8 +219,6 @@ namespace wdk::build_17134
         VOID* InheritedFromUniqueProcessId;
 #ifdef _X86_
         VOID* LdtInformation;
-#else
-        VOID* Spare0;
 #endif
         volatile SIZE_T OwnerProcessId;
         struct _PEB* Peb;
@@ -184,7 +273,7 @@ namespace wdk::build_17134
         UINT32 RequestedTimerResolution;
         UINT32 SmallestTimerResolution;
 #ifdef _X86_
-        UINT32 Padding0;
+        UINT32 __Padding_0;
 #endif
         union _LARGE_INTEGER ExitTime;
 #ifdef _WIN64
@@ -201,8 +290,9 @@ namespace wdk::build_17134
         struct _PS_PROTECTION Protection;
         struct /* bitfield */
         {
-            UINT8 HangCount : 4; /* bit position: 0 */
-            UINT8 GhostCount : 4; /* bit position: 4 */
+            UINT8 HangCount : 3; /* bit position: 0 */
+            UINT8 GhostCount : 3; /* bit position: 3 */
+            UINT8 PrefilterException : 1; /* bit position: 6 */
         }; /* bitfield */
         union
         {
@@ -228,6 +318,11 @@ namespace wdk::build_17134
                 UINT32 ForegroundExternal : 1; /* bit position: 16 */
                 UINT32 ForegroundSystem : 1; /* bit position: 17 */
                 UINT32 HighMemoryPriority : 1; /* bit position: 18 */
+                UINT32 EnableProcessSuspendResumeLogging : 1; /* bit position: 19 */
+                UINT32 EnableThreadSuspendResumeLogging : 1; /* bit position: 20 */
+                UINT32 SecurityDomainChanged : 1; /* bit position: 21 */
+                UINT32 SecurityFreezeComplete : 1; /* bit position: 22 */
+                UINT32 VmProcessorHost : 1; /* bit position: 23 */
             }; /* bitfield */
         }; /* size: 0x0004 */
         INT32 DeviceAsid;
@@ -239,7 +334,6 @@ namespace wdk::build_17134
         struct _PROCESS_DISK_COUNTERS* DiskCounters;
         VOID* PicoContext;
 #ifdef _WIN64
-        UINT64 TrustletIdentity;
         VOID* EnclaveTable;
         UINT64 EnclaveNumber;
         struct _EX_PUSH_LOCK EnclaveLock;
@@ -328,6 +422,7 @@ namespace wdk::build_17134
                     UINT32 EnableModuleTamperingProtection : 1; /* bit position: 28 */
                     UINT32 EnableModuleTamperingProtectionNoInherit : 1; /* bit position: 29 */
                     UINT32 RestrictIndirectBranchPrediction : 1; /* bit position: 30 */
+                    UINT32 IsolateSecurityDomain : 1; /* bit position: 31 */
                 }; /* bitfield */
             } /* size: 0x0004 */ MitigationFlagsValues;
         }; /* size: 0x0004 */
@@ -351,15 +446,20 @@ namespace wdk::build_17134
                     UINT32 EnableImportAddressFilter : 1; /* bit position: 10 */
                     UINT32 AuditImportAddressFilter : 1; /* bit position: 11 */
                     UINT32 DisablePageCombine : 1; /* bit position: 12 */
-                    UINT32 MemoryDisambiguationDisable : 1; /* bit position: 13 */
+                    UINT32 SpeculativeStoreBypassDisable : 1; /* bit position: 13 */
+                    UINT32 CetShadowStacks : 1; /* bit position: 14 */
                 }; /* bitfield */
             } /* size: 0x0004 */ MitigationFlags2Values;
         }; /* size: 0x0004 */
         VOID* PartitionObject;
         UINT64 SecurityDomain;
+        UINT64 ParentSecurityDomain;
         VOID* CoverageSamplerContext;
-    } EPROCESS, *PEPROCESS; /* size: 0x0848 */ /* size: 0x0400 */
-    static_assert(sizeof(EPROCESS) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0848 : 0x0400));
-
+        VOID* MmHotPatchContext;
+#ifdef _X86_
+        UINT8 __Padding_1[0x8];
+#endif
+    } EPROCESS, *PEPROCESS; /* size: 0x0880 */ /* size: 0x0480 */
+    static_assert(sizeof(EPROCESS) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0880 : 0x0480));
 
 }

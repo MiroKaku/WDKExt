@@ -129,6 +129,9 @@ namespace wdk
             case 17763:
                 NtSystemVersion = SystemVersion::Windows10_1809;
                 break;
+            case 18362:
+                NtSystemVersion = SystemVersion::Windows10_1903;
+                break;
             }
 
             return NtSystemVersion;
@@ -299,6 +302,15 @@ namespace wdk
         inline bool IsWindowsRedstone5OrGreater()
         {
             if (GetSystemVersion() >= SystemVersion::Windows10_1809)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows19H1OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows10_1903)
             {
                 return true;
             }

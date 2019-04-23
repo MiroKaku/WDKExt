@@ -212,7 +212,11 @@ namespace wdk::build_9200
         struct _PAGEFAULT_HISTORY* WorkingSetWatch;
         VOID* Win32WindowStation;
         VOID* InheritedFromUniqueProcessId;
+#ifdef _X86_
         VOID* LdtInformation;
+#else
+        VOID* Spare0;
+#endif
         union
         {
             struct _EPROCESS* CreatorProcess;

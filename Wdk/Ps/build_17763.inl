@@ -127,7 +127,11 @@ namespace wdk::build_17763
         struct _PAGEFAULT_HISTORY* WorkingSetWatch;
         VOID* Win32WindowStation;
         VOID* InheritedFromUniqueProcessId;
+#ifdef _X86_
         VOID* LdtInformation;
+#else
+        VOID* Spare0;
+#endif
         volatile SIZE_T OwnerProcessId;
         struct _PEB* Peb;
         struct _MM_SESSION_SPACE* Session;
@@ -366,6 +370,5 @@ namespace wdk::build_17763
         VOID* MmHotPatchContext;
     } EPROCESS, *PEPROCESS; /* size: 0x0850 */ /* size: 0x0408 */
     static_assert(sizeof(EPROCESS) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0850 : 0x0408));
-
 
 }

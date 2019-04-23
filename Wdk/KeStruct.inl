@@ -416,3 +416,4 @@ namespace wdk
 #include "Ke\build_16299.inl"
 #include "Ke\build_17134.inl"
 #include "Ke\build_17763.inl"
+#include "Ke\build_18362.inl"

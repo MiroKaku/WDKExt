@@ -197,7 +197,11 @@ namespace wdk::build_15063
         struct _PAGEFAULT_HISTORY* WorkingSetWatch;
         VOID* Win32WindowStation;
         VOID* InheritedFromUniqueProcessId;
+#ifdef _X86_
         VOID* LdtInformation;
+#else
+        VOID* Spare0;
+#endif
         volatile SIZE_T OwnerProcessId;
         struct _PEB* Peb;
         struct _MM_SESSION_SPACE* Session;

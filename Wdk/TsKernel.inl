@@ -178,6 +178,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vRundownProtect = &reinterpret_cast<wdk::build_17763::PETHREAD>(aThread)->RundownProtect;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vRundownProtect = &reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->RundownProtect;
+                break;
             }
 
             return vRundownProtect;
@@ -225,6 +228,9 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1809:
                 vFlags = reinterpret_cast<wdk::build_17763::PETHREAD>(aThread)->CrossThreadFlags;
+                break;
+            case wdk::SystemVersion::Windows10_1903:
+                vFlags = reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->CrossThreadFlags;
                 break;
             }
 
@@ -317,6 +323,9 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1809:
                 vFlags = &reinterpret_cast<wdk::build_17763::PETHREAD>(aThread)->CrossThreadFlags;
+                break;
+            case wdk::SystemVersion::Windows10_1903:
+                vFlags = &reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->CrossThreadFlags;
                 break;
             }
 
@@ -423,6 +432,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vStartAddress = reinterpret_cast<wdk::build_17763::PETHREAD>(aThread)->StartAddress;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vStartAddress = reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->StartAddress;
+                break;
             }
 
             return vStartAddress;
@@ -470,6 +482,9 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1809:
                 vExitStatus = reinterpret_cast<wdk::build_17763::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1903:
+                vExitStatus = reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->ExitStatus;
                 break;
             }
 

@@ -362,6 +362,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vRundownProtect = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->RundownProtect;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vRundownProtect = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->RundownProtect;
+                break;
             }
 
             return vRundownProtect;
@@ -409,6 +412,9 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1809:
                 vSectionObject = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1903:
+                vSectionObject = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->SectionObject;
                 break;
             }
 
@@ -458,6 +464,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vFlags = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->Flags;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vFlags = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->Flags;
+                break;
             }
 
             return vFlags;
@@ -505,6 +514,9 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1809:
                 vFlags = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1903:
+                vFlags = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->Flags;
                 break;
             }
 
@@ -559,6 +571,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vFlags = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->Flags;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vFlags = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->Flags;
+                break;
             }
 
             if (vFlags)
@@ -612,6 +627,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vExitTime = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->ExitTime;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vExitTime = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->ExitTime;
+                break;
             }
 
             if (vExitTime)
@@ -663,6 +681,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vActiveThreads = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->ActiveThreads;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vActiveThreads = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
             }
 
             return vActiveThreads;
@@ -711,6 +732,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vExitStatus = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->LastThreadExitStatus;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vExitStatus = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
             }
 
             return vExitStatus;
@@ -758,6 +782,9 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1809:
                 vDebugPort = &reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1903:
+                vDebugPort = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->DebugPort;
                 break;
             }
 
@@ -813,6 +840,9 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1809:
                 vPort = reinterpret_cast<wdk::build_17763::PEPROCESS>(aProcess)->ExceptionPortValue;
                 break;
+            case wdk::SystemVersion::Windows10_1903:
+                vPort = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
             }
 
             return (PVOID)vPort;
@@ -826,7 +856,7 @@ namespace wdk
         {
             auto vStatus  = STATUS_SUCCESS;
             auto vProcess = PEPROCESS();
-            auto vApcState= KAPC_STATE{};
+            auto vApcState= KAPC_STATE();
             for (;;)
             {
                 for (auto vProcessId = 500; vProcessId < 20000; vProcessId += 4)
