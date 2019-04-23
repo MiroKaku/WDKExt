@@ -1,5 +1,8 @@
 # Windows Driver Kit Extesion Header
 
+[![LICENSE](https://img.shields.io/badge/license-LGPL--3.0-blue.svg)](https://github.com/MeeSong/WDKExt/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+
 ## Environment
 
 * C++17  
