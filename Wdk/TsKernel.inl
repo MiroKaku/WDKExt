@@ -181,6 +181,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vRundownProtect = &reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->RundownProtect;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vRundownProtect = &reinterpret_cast<wdk::build_18363::PETHREAD>(aThread)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vRundownProtect = &reinterpret_cast<wdk::build_19041::PETHREAD>(aThread)->RundownProtect;
+                break;
             }
 
             return vRundownProtect;
@@ -231,6 +237,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vFlags = reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->CrossThreadFlags;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vFlags = reinterpret_cast<wdk::build_18363::PETHREAD>(aThread)->CrossThreadFlags;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vFlags = reinterpret_cast<wdk::build_19041::PETHREAD>(aThread)->CrossThreadFlags;
                 break;
             }
 
@@ -326,6 +338,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vFlags = &reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->CrossThreadFlags;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vFlags = &reinterpret_cast<wdk::build_18363::PETHREAD>(aThread)->CrossThreadFlags;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vFlags = &reinterpret_cast<wdk::build_19041::PETHREAD>(aThread)->CrossThreadFlags;
                 break;
             }
 
@@ -435,6 +453,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vStartAddress = reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->StartAddress;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vStartAddress = reinterpret_cast<wdk::build_18363::PETHREAD>(aThread)->StartAddress;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vStartAddress = reinterpret_cast<wdk::build_19041::PETHREAD>(aThread)->StartAddress;
+                break;
             }
 
             return vStartAddress;
@@ -485,6 +509,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vExitStatus = reinterpret_cast<wdk::build_18362::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vExitStatus = reinterpret_cast<wdk::build_18363::PETHREAD>(aThread)->ExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vExitStatus = reinterpret_cast<wdk::build_19041::PETHREAD>(aThread)->ExitStatus;
                 break;
             }
 

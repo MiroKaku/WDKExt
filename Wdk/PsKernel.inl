@@ -365,6 +365,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vRundownProtect = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->RundownProtect;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vRundownProtect = &reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->RundownProtect;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vRundownProtect = &reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->RundownProtect;
+                break;
             }
 
             return vRundownProtect;
@@ -415,6 +421,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vSectionObject = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vSectionObject = reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->SectionObject;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vSectionObject = reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->SectionObject;
                 break;
             }
 
@@ -467,6 +479,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vFlags = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->Flags;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vFlags = reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vFlags = reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->Flags;
+                break;
             }
 
             return vFlags;
@@ -517,6 +535,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vFlags = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vFlags = &reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vFlags = &reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->Flags;
                 break;
             }
 
@@ -574,6 +598,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vFlags = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->Flags;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vFlags = &reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->Flags;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vFlags = &reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->Flags;
+                break;
             }
 
             if (vFlags)
@@ -630,6 +660,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vExitTime = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->ExitTime;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vExitTime = &reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->ExitTime;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vExitTime = &reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->ExitTime;
+                break;
             }
 
             if (vExitTime)
@@ -684,6 +720,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vActiveThreads = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->ActiveThreads;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vActiveThreads = reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vActiveThreads = reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->ActiveThreads;
+                break;
             }
 
             return vActiveThreads;
@@ -735,6 +777,12 @@ namespace wdk
             case wdk::SystemVersion::Windows10_1903:
                 vExitStatus = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->LastThreadExitStatus;
                 break;
+            case wdk::SystemVersion::Windows10_1909:
+                vExitStatus = reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vExitStatus = reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->LastThreadExitStatus;
+                break;
             }
 
             return vExitStatus;
@@ -785,6 +833,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vDebugPort = &reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vDebugPort = &reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->DebugPort;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vDebugPort = &reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->DebugPort;
                 break;
             }
 
@@ -842,6 +896,12 @@ namespace wdk
                 break;
             case wdk::SystemVersion::Windows10_1903:
                 vPort = reinterpret_cast<wdk::build_18362::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_1909:
+                vPort = reinterpret_cast<wdk::build_18363::PEPROCESS>(aProcess)->ExceptionPortValue;
+                break;
+            case wdk::SystemVersion::Windows10_2004:
+                vPort = reinterpret_cast<wdk::build_19041::PEPROCESS>(aProcess)->ExceptionPortValue;
                 break;
             }
 
