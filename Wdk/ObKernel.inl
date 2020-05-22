@@ -55,7 +55,7 @@ namespace wdk
             ObOpenObjectByPointer(
                 _In_ PVOID              aObject,
                 _In_ ULONG              aHandleAttributes,
-                _In_opt_ PACCESS_STATE  aPassedAccessState,
+                _Out_opt_ PACCESS_STATE  aPassedAccessState,
                 _In_ ACCESS_MASK        aDesiredAccess,
                 _In_opt_ POBJECT_TYPE   aObjectType,
                 _In_ KPROCESSOR_MODE    aAccessMode,
