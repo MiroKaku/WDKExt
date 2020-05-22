@@ -27,3 +27,4 @@ namespace wdk
 #include "Wmi\build_17763.inl"
 #include "Wmi\build_18362.inl"
 #include "Wmi\build_18363.inl"
+#include "Wmi\build_19041.inl"
