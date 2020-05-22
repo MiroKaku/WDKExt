@@ -91,3 +91,5 @@ namespace wdk
 #include "Fs\build_16299.inl"
 #include "Fs\build_17134.inl"
 #include "Fs\build_17763.inl"
+#include "Fs\build_18362.inl"
+#include "Fs\build_18363.inl"

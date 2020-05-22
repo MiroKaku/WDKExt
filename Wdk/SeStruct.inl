@@ -536,3 +536,5 @@ namespace wdk
 #include "Se\build_16299.inl"
 #include "Se\build_17134.inl"
 #include "Se\build_17763.inl"
+#include "Se\build_18362.inl"
+#include "Se\build_18363.inl"

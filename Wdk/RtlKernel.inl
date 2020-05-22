@@ -132,6 +132,12 @@ namespace wdk
             case 18362:
                 NtSystemVersion = SystemVersion::Windows10_1903;
                 break;
+            case 18363:
+                NtSystemVersion = SystemVersion::Windows10_1909;
+                break;
+            case 19041:
+                NtSystemVersion = SystemVersion::Windows10_2004;
+                break;
             }
 
             return NtSystemVersion;
@@ -311,6 +317,24 @@ namespace wdk
         inline bool IsWindows19H1OrGreater()
         {
             if (GetSystemVersion() >= SystemVersion::Windows10_1903)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows19H2OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows10_1909)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows20H1OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows10_2004)
             {
                 return true;
             }

@@ -252,3 +252,5 @@ namespace wdk
 #include "LPC\build_16299.inl"
 #include "LPC\build_17134.inl"
 #include "LPC\build_17763.inl"
+#include "LPC\build_18362.inl"
+#include "LPC\build_18363.inl"

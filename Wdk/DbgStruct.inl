@@ -31,3 +31,5 @@ namespace wdk
 #include "Dbg\build_16299.inl"
 #include "Dbg\build_17134.inl"
 #include "Dbg\build_17763.inl"
+#include "Dbg\build_18362.inl"
+#include "Dbg\build_18363.inl"

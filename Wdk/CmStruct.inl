@@ -17,3 +17,5 @@ namespace wdk
 #include "Cm\build_16299.inl"
 #include "Cm\build_17134.inl"
 #include "Cm\build_17763.inl"
+#include "Cm\build_18362.inl"
+#include "Cm\build_18363.inl"

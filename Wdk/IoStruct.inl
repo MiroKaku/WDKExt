@@ -17,3 +17,5 @@ namespace wdk
 #include "Io\build_16299.inl"
 #include "Io\build_17134.inl"
 #include "Io\build_17763.inl"
+#include "Io\build_18362.inl"
+#include "Io\build_18363.inl"

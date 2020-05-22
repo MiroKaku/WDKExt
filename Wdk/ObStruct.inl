@@ -447,3 +447,5 @@ namespace wdk
 #include "Ob\build_16299.inl"
 #include "Ob\build_17134.inl"
 #include "Ob\build_17763.inl"
+#include "Ob\build_18362.inl"
+#include "Ob\build_18363.inl"
