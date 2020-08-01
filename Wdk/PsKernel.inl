@@ -137,8 +137,8 @@ namespace wdk
             PsGetProcessSessionId(
                 _In_ PEPROCESS Process
             );
-
-        // 区别在于 Ex 会返回 -1
+        
+        // The difference is that Ex will return -1
         ULONG NTAPI
             PsGetProcessSessionIdEx(
                 _In_ PEPROCESS Process
@@ -929,7 +929,7 @@ namespace wdk
                 }
                 if (!vProcess)
                 {
-                    vStatus = STATUS_NOT_FOUND;
+                    //vStatus = STATUS_NOT_FOUND;
                     break;
                 }
 
