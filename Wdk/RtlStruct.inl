@@ -34,6 +34,7 @@ namespace wdk
         Windows10_1903,             // 10.0.18362
         Windows10_1909,             // 10.0.18363
         Windows10_2004,             // 10.0.19041
+        Windows10_2009,             // 10.0.19042
         WindowsMax,
     };
 #pragma endregion
@@ -196,3 +197,4 @@ namespace wdk
 #include "Rtl\build_18362.inl"
 #include "Rtl\build_18363.inl"
 #include "Rtl\build_19041.inl"
+#include "Rtl\build_19042.inl"

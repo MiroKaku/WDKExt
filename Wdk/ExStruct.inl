@@ -102,3 +102,4 @@ namespace wdk
 #include "Ex\build_18362.inl"
 #include "Ex\build_18363.inl"
 #include "Ex\build_19041.inl"
+#include "Ex\build_19042.inl"

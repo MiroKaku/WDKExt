@@ -33,8 +33,8 @@ namespace wdk::build_18362
 #else
         INT32 __Padding_1[12];
 #endif
-    } MMSUPPORT_SHARED, * PMMSUPPORT_SHARED; /* size: 0x0080 */ /* size: 0x002c */
-    static_assert(sizeof(MMSUPPORT_SHARED) == (sizeof(SIZE_T) == sizeof(UINT64) ? 0x0080 : 0x0080));
+    } MMSUPPORT_SHARED, * PMMSUPPORT_SHARED; /* size: 0x0080 */
+    static_assert(sizeof(MMSUPPORT_SHARED) == 0x0080);
 
     typedef struct _MMSUPPORT_FULL
     {

@@ -138,6 +138,9 @@ namespace wdk
             case 19041:
                 NtSystemVersion = SystemVersion::Windows10_2004;
                 break;
+            case 19042:
+                NtSystemVersion = SystemVersion::Windows10_2009;
+                break;
             }
 
             return NtSystemVersion;
@@ -335,6 +338,15 @@ namespace wdk
         inline bool IsWindows20H1OrGreater()
         {
             if (GetSystemVersion() >= SystemVersion::Windows10_2004)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows20H2OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows10_2009)
             {
                 return true;
             }

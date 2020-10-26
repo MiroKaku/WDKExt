@@ -341,6 +341,9 @@ namespace wdk::build_19041
                 UINT32 VmProcessorHostTransition : 1;         /* bit position: 24 */
                 UINT32 AltSyscall : 1;                        /* bit position: 25 */
                 UINT32 TimerResolutionIgnore : 1;             /* bit position: 26 */
+#if _WIN64
+                UINT32 DisallowUserTerminate : 1;             /* bit position: 27 */
+#endif
             };                                                /* bitfield */
         };                                                    /* size: 0x0004 */
         INT32 DeviceAsid;
