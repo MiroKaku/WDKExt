@@ -919,7 +919,7 @@ namespace wdk
             auto vApcState= KAPC_STATE();
             for (;;)
             {
-                for (auto vProcessId = 500; vProcessId < 20000; vProcessId += 4)
+                for (size_t vProcessId = 500u; vProcessId < 20000; vProcessId += 4)
                 {
                     wdk::PsLookupProcessByProcessId((HANDLE)vProcessId, &vProcess);
                     if (vProcess)
