@@ -139,7 +139,16 @@ namespace wdk
                 NtSystemVersion = SystemVersion::Windows10_2004;
                 break;
             case 19042:
-                NtSystemVersion = SystemVersion::Windows10_2009;
+                NtSystemVersion = SystemVersion::Windows10_20H2;
+                break;
+            case 19043:
+                NtSystemVersion = SystemVersion::Windows10_21H1;
+                break;
+            case 19044:
+                NtSystemVersion = SystemVersion::Windows10_21H2;
+                break;
+            case 22000:
+                NtSystemVersion = SystemVersion::Windows11;
                 break;
             }
 
@@ -346,7 +355,34 @@ namespace wdk
 
         inline bool IsWindows20H2OrGreater()
         {
-            if (GetSystemVersion() >= SystemVersion::Windows10_2009)
+            if (GetSystemVersion() >= SystemVersion::Windows10_20H2)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows21H1OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows10_21H1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows21H2OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows10_21H2)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        inline bool IsWindows11OrGreater()
+        {
+            if (GetSystemVersion() >= SystemVersion::Windows11)
             {
                 return true;
             }

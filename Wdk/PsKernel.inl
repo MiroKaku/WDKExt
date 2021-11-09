@@ -908,65 +908,9 @@ namespace wdk
             return (PVOID)vPort;
         }
 
-
-        __declspec(selectany) PVOID PsSystemDllBase = nullptr;
-
-
         inline auto PsInitSystem() -> NTSTATUS
         {
-            auto vStatus  = STATUS_SUCCESS;
-            auto vProcess = PEPROCESS();
-            auto vApcState= KAPC_STATE();
-            for (;;)
-            {
-                for (size_t vProcessId = 500u; vProcessId < 20000; vProcessId += 4)
-                {
-                    wdk::PsLookupProcessByProcessId((HANDLE)vProcessId, &vProcess);
-                    if (vProcess)
-                    {
-                        break;
-                    }
-                }
-                if (!vProcess)
-                {
-                    //vStatus = STATUS_NOT_FOUND;
-                    break;
-                }
-
-                KeStackAttachProcess((PKPROCESS)vProcess, &vApcState);
-
-                auto vPeb = (PPEB)PsGetProcessPeb(vProcess);
-                auto vLdr = (PPEB_LDR_DATA)vPeb->Ldr;
-                auto vLdrHead = (PLIST_ENTRY)&vLdr->InLoadOrderModuleList;
-
-                for (auto vLdrNext = vLdrHead->Flink; vLdrNext != vLdrHead; vLdrNext = vLdrNext->Flink)
-                {
-                    auto vLdrEntry = CONTAINING_RECORD(vLdrNext, LDR_DATA_TABLE_ENTRY, InLoadOrderLinks);
-                    auto vDllName = (PUNICODE_STRING)&vLdrEntry->BaseDllName;
-
-                    if (wcsncmp(vDllName->Buffer, L"ntdll.dll", vDllName->Length / sizeof(wchar_t)) == 0)
-                    {
-                        PsSystemDllBase = vLdrEntry->DllBase;
-                        break;
-                    }
-                }
-                if (nullptr == PsSystemDllBase)
-                {
-                    vStatus = STATUS_NOT_FOUND;
-                    break;
-                }
-
-                break;
-            }
-            if (vProcess) 
-            {
-                KeUnstackDetachProcess(&vApcState);
-
-                ObDereferenceObject(vProcess);
-                vProcess = nullptr;
-            }
-
-            return vStatus;
+            return STATUS_SUCCESS;
         }
     }
 }

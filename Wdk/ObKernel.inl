@@ -168,6 +168,8 @@ namespace wdk
         __declspec(selectany) UINT8 ObInfoMaskToOffset[UINT8(~UINT8(0u)) + 1u]{};
         inline auto ObInitInfoBlockOffsets() -> NTSTATUS
         {
+            // ntoskrnl.ObpInitInfoBlockOffsets
+
             auto vVer = GetSystemVersion();
             if (vVer == SystemVersion::Unknown)
             {

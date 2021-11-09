@@ -7,7 +7,7 @@ namespace wdk
 #pragma region Version
     enum class SystemVersion : UINT32
     {
-        Unknown,
+        Unknown,                    // unknown
 
         WindowsXP,                  // 5.1.2600
         WindowsXP64,                // 5.2.3790
@@ -20,10 +20,9 @@ namespace wdk
         Windows7_SP1,               // 6.1.7601
 
         Windows8,                   // 6.2.9200
-
         Windows8_1,                 // 6.3.9600
 
-        Windows10,
+        Windows10,                  // 10.0.10240
         Windows10_1507 = Windows10, // 10.0.10240
         Windows10_1511,             // 10.0.10586
         Windows10_1607,             // 10.0.14393
@@ -34,7 +33,13 @@ namespace wdk
         Windows10_1903,             // 10.0.18362
         Windows10_1909,             // 10.0.18363
         Windows10_2004,             // 10.0.19041
-        Windows10_2009,             // 10.0.19042
+        Windows10_20H2,             // 10.0.19042
+        Windows10_21H1,             // 10.0.19043
+        Windows10_21H2,             // 10.0.19044
+
+        Windows11,                  // 10.0.22000
+        Windows11_21H2 = Windows11, // 10.0.22000
+
         WindowsMax,
     };
 #pragma endregion
